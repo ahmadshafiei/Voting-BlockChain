@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Votin.Model.Entities
@@ -14,7 +15,7 @@ namespace Votin.Model.Entities
 
         public override bool Equals(object obj)
         {
-            return Hash == ((Block)obj).Hash;
+            return Hash.SequenceEqual(((Block)obj).Hash);
         }
 
         public override int GetHashCode()

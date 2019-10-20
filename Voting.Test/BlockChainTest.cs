@@ -11,29 +11,23 @@ namespace Voting.Test
 {
     public class BlockChainTest
     {
-        private readonly BlockService _blockService = new BlockService();
-        private BlockChainService _blockChainService;
-        private BlockChainService _blockChainService2;
-
         [Fact]
         public void BlockChain_Init_Genesis()
         {
-            _blockChainService = new BlockChainService(_blockService);
-
-            //var lastBlock = BlockChain.Chain.Last();
-            //var genesis = _blockService.GenesisBlock();
-
-            //Assert.Same(genesis, lastBlock);
+            var lastBlock = BlockChain.Chain.Last();
+            var genesis = BlockChain.GenesisBlock();
+            
+            Assert.Equal(genesis, lastBlock);
         }
 
         [Fact]
         public void BlockChain_Add_AddedShouldBeLast()
         {
-        //    var block = _blockChainService.AddBlock("New Block");
+            //var block = _blockChainService.AddBlock("New Block");
 
-        //    var lastBlock = BlockService _blockService.Chain.Last();
+            //var lastBlock = BlockService _blockService.Chain.Last();
 
-        //    Assert.Equal(block, lastBlock);
+            //Assert.Equal(block, lastBlock);
         }
 
         [Fact]

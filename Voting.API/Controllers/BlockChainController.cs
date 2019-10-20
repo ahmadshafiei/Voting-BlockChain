@@ -27,7 +27,7 @@ namespace Voting.API.Controllers
         [HttpGet]
         public IActionResult GetBlockChain()
         {
-            return Ok(_blockService.Chain);
+            return Ok(BlockChain.Chain);
         }
 
         [HttpPost]

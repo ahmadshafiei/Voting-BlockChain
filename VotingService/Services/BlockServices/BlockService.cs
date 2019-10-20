@@ -2,32 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using Votin.Model.Entities;
-using Voting.Service.Utility;
+using Voting.Infrastructure.Utility;
 
 namespace Voting.Service.Services.BlockServices
 {
     public class BlockService
     {
-        public List<Block> Chain { get; set; } = new List<Block>();
-        /// <summary>
-        /// First block in chain
-        /// </summary>
-        /// <returns>Returns first block of chain (GENESIS)</returns>
-        public Block GenesisBlock()
-        {
-            Block genesis = new Block
-            {
-                Timestamp = DateTime.MinValue.Ticks,
-                Data = null,
-                PreviousHash = null
-            };
-
-            genesis.Hash = Hash.HashBlock(genesis);
-
-            return genesis;
-        }
-
-
         /// <summary>
         /// Set's the block according to <paramref name="previousBlock"/> 
         /// </summary>

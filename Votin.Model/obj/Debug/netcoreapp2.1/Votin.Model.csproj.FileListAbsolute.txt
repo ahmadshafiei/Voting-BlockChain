@@ -6,3 +6,4 @@ C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\obj\Debug\netcoreapp2.1\Voti
 C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\obj\Debug\netcoreapp2.1\Votin.Model.AssemblyInfo.cs
 C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\obj\Debug\netcoreapp2.1\Votin.Model.dll
 C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\obj\Debug\netcoreapp2.1\Votin.Model.pdb
+C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\obj\Debug\netcoreapp2.1\Votin.Model.csprojAssemblyReference.cache
