@@ -1,0 +1,14 @@
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\obj\Debug\netcoreapp2.1\Voting.Service.csprojAssemblyReference.cache
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\obj\Debug\netcoreapp2.1\Voting.Service.csproj.CoreCompileInputs.cache
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\obj\Debug\netcoreapp2.1\Voting.Service.AssemblyInfoInputs.cache
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\obj\Debug\netcoreapp2.1\Voting.Service.AssemblyInfo.cs
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\bin\Debug\netcoreapp2.1\Voting.Service.deps.json
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\bin\Debug\netcoreapp2.1\Voting.Service.dll
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\bin\Debug\netcoreapp2.1\Voting.Service.pdb
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\bin\Debug\netcoreapp2.1\Votin.Model.dll
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\bin\Debug\netcoreapp2.1\Votin.Model.pdb
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\obj\Debug\netcoreapp2.1\Voting.Service.csproj.CopyComplete
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\obj\Debug\netcoreapp2.1\Voting.Service.dll
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\obj\Debug\netcoreapp2.1\Voting.Service.pdb
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\bin\Debug\netcoreapp2.1\Voting.Infrastructure.dll
+C:\Users\Ahmad\Desktop\VotingBlockChain\VotingService\bin\Debug\netcoreapp2.1\Voting.Infrastructure.pdb

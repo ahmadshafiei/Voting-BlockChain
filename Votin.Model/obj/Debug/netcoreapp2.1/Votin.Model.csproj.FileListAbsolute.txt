@@ -1,0 +1,8 @@
+C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\bin\Debug\netcoreapp2.1\Votin.Model.deps.json
+C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\bin\Debug\netcoreapp2.1\Votin.Model.dll
+C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\bin\Debug\netcoreapp2.1\Votin.Model.pdb
+C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\obj\Debug\netcoreapp2.1\Votin.Model.csproj.CoreCompileInputs.cache
+C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\obj\Debug\netcoreapp2.1\Votin.Model.AssemblyInfoInputs.cache
+C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\obj\Debug\netcoreapp2.1\Votin.Model.AssemblyInfo.cs
+C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\obj\Debug\netcoreapp2.1\Votin.Model.dll
+C:\Users\Ahmad\Desktop\VotingBlockChain\Votin.Model\obj\Debug\netcoreapp2.1\Votin.Model.pdb

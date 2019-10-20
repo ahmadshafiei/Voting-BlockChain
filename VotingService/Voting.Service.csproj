@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Votin.Model\Votin.Model.csproj" />
+    <ProjectReference Include="..\Voting.Infrastructure\Voting.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
