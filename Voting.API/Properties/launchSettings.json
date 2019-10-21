@@ -14,8 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "api/values",
       "environmentVariables": {
-        "PEERS": "ws://127.0.0.1:5001",
-        "P2P_Port": "5002",
+        "P2P_Port": "5001",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },

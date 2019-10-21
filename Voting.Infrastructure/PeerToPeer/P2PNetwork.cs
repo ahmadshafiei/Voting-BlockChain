@@ -15,6 +15,7 @@ namespace Voting.Infrastructure.PeerToPeer
     public class P2PNetwork
     {
         private ManualResetEvent allDone = new ManualResetEvent(false);
+        private ManualResetEvent messageManualReset = new ManualResetEvent(false);
         private readonly IPAddress localhost = IPAddress.Parse("127.0.0.1");
 
         /// <summary>
@@ -42,29 +43,8 @@ namespace Voting.Infrastructure.PeerToPeer
 
             Console.WriteLine($"Current P2P_Port : {_p2pPort}");
 
-            ListenForPeers();
             ConnectToPeers();
-        }
-
-        private void ListenForPeers()
-        {
-            Task.Run(() =>
-            {
-                var server = new TcpListener(localhost, _p2pPort);
-                server.Start();
-
-                while (true)
-                {
-                    allDone.Reset();
-
-                    Thread.Sleep(1000);
-
-                    server.BeginAcceptSocket(AddSocket, server);
-
-                    Console.WriteLine("Waiting For Connection ...");
-                    allDone.WaitOne();
-                }
-            });
+            ListenForPeers();
         }
 
         private void ConnectToPeers()
@@ -80,15 +60,35 @@ namespace Voting.Infrastructure.PeerToPeer
             {
                 socket.Connect(IPAddress.Parse(peerAddress.Split(':')[1].Substring(2)), Convert.ToInt32(peerAddress.Split(':')[2]));
                 _sockets.Add(socket);
+                MessageHandler(socket);
+                SendMessage(socket);
                 Console.WriteLine($"Connected to initial peer {peerAddress}");
             }
             catch (Exception e)
             {
-                Console.WriteLine("-------------------------------------------------");
+                Console.WriteLine("---------------------- Error ---------------------------");
                 Console.WriteLine(e.Message);
-                Console.WriteLine($"Error : Invalid initial peer address {peerAddress}");
                 Console.WriteLine("-------------------------------------------------");
             }
+        }
+
+        private void ListenForPeers()
+        {
+            Task.Run(() =>
+            {
+                var server = new TcpListener(localhost, _p2pPort);
+                server.Start();
+
+                while (true)
+                {
+                    allDone.Reset();
+
+                    Console.WriteLine("Waiting For Connection ...");
+                    server.BeginAcceptSocket(AddSocket, server);
+
+                    allDone.WaitOne();
+                }
+            });
         }
 
         private void AddSocket(IAsyncResult ar)
@@ -98,10 +98,97 @@ namespace Voting.Infrastructure.PeerToPeer
             var clientSocket = listener.EndAcceptSocket(ar);
 
             _sockets.Add(clientSocket);
+            MessageHandler(clientSocket);
 
             Console.WriteLine("Peer Connected");
 
             allDone.Set();
+        }
+
+        private void SendMessage(Socket socket)
+        {
+            byte[] data = Encoding.UTF8.GetBytes("SUCK IT");
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            byte[] packet = dataLength.Concat(data).ToArray();
+
+            Console.WriteLine("Begin Message Send");
+
+            socket.Send(packet);
+
+            Console.WriteLine("Data Sent");
+        }
+
+        private void MessageHandler(Socket socket)
+        {
+            Task.Run(() =>
+            {
+
+                while (true)
+                {
+                    messageManualReset.Reset();
+
+                    StateObject state = new StateObject
+                    {
+                        workSocket = socket
+                    };
+
+                    //byte[] bufferSize = new byte[4];
+                    //socket.Receive(bufferSize);
+
+                    //state.BufferSize = Convert.ToInt32(bufferSize);
+
+                    socket.BeginReceive(state.buffer, 0, 1000, SocketFlags.None, HandleData, state);
+
+                    messageManualReset.WaitOne();
+                }
+
+            });
+        }
+
+        private void HandleData(IAsyncResult ar)
+        {
+            var state = (StateObject)ar.AsyncState;
+
+            var s = Encoding.UTF8.GetString(state.buffer);
+
+            state.workSocket.EndAccept(ar);
+
+            Console.WriteLine(state.data);
+
+            messageManualReset.Set();
+        }
+    }
+
+    public class StateObject
+    {
+        // Client  socket.  
+        public Socket workSocket = null;
+
+        // Size of receive buffer.  
+        private int _bufferSize;
+        public int BufferSize
+        {
+            get
+            {
+                return _bufferSize;
+            }
+
+            set
+            {
+                _bufferSize = value;
+                buffer = new byte[value];
+            }
+        }
+
+        // Receive buffer.  
+        public byte[] buffer = new byte[1000];
+        // Received data string.  
+        public string data
+        {
+            get
+            {
+                return Convert.ToString(buffer);
+            }
         }
     }
 }
