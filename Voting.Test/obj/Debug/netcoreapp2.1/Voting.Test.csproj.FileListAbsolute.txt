@@ -11,8 +11,6 @@ C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.Test\bin\Debug\netcoreapp2.1\Voti
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.Test\bin\Debug\netcoreapp2.1\Voting.Test.dll
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.Test\bin\Debug\netcoreapp2.1\Voting.Test.pdb
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.Test\bin\Debug\netcoreapp2.1\Votin.Model.dll
-C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.Test\bin\Debug\netcoreapp2.1\Voting.Service.dll
-C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.Test\bin\Debug\netcoreapp2.1\Voting.Service.pdb
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.Test\bin\Debug\netcoreapp2.1\Votin.Model.pdb
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.Test\obj\Debug\netcoreapp2.1\Voting.Test.csproj.CopyComplete
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.Test\obj\Debug\netcoreapp2.1\Voting.Test.dll

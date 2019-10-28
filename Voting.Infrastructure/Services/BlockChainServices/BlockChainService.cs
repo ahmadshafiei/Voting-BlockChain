@@ -5,20 +5,25 @@ using System.Text;
 using Votin.Model.Entities;
 using Voting.Infrastructure;
 using Voting.Infrastructure.Utility;
-using Voting.Service.Services.BlockServices;
+using Voting.Infrastructure.Services.BlockServices;
+using Voting.Infrastructure.PeerToPeer;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Voting.Service.Services.BlockChainServices
+namespace Voting.Infrastructure.Services.BlockChainServices
 {
     public class BlockChainService
     {
         private readonly BlockService _blockService;
+        private P2PNetwork _p2PNetwork;
+        private readonly IServiceProvider _serviceProvider;
 
-        public BlockChainService(BlockService blockService)
+        public BlockChainService(BlockService blockService, IServiceProvider serviceProvider)
         {
             _blockService = blockService;
+            _serviceProvider = serviceProvider;
         }
 
-        public Block AddBlock(string data)
+        public List<Block> AddBlock(string data)
         {
             Block lastBlock = BlockChain.Chain.Last();
 
@@ -26,20 +31,24 @@ namespace Voting.Service.Services.BlockChainServices
 
             BlockChain.Chain.Add(block);
 
-            return block;
+            //Can't use Constructor DI Because of circular injection
+            _p2PNetwork = _serviceProvider.GetService<P2PNetwork>();
+            _p2PNetwork.SyncChains();
+
+            return BlockChain.Chain;
         }
 
         public bool IsValidChain(List<Block> chain)
         {
-            if (chain.First() != BlockChain.GenesisBlock())
+            if (!chain.First().Equals(BlockChain.GenesisBlock()))
                 return false;
 
             for (int i = 1; i < chain.Count; i++)
             {
                 Block block = chain[i];
                 Block previousBlock = chain[i - 1];
-
-                if (block.PreviousHash != previousBlock.Hash || block.Hash != Hash.HashBlock(block))
+                
+                if (!block.PreviousHash.SequenceEqual(previousBlock.Hash) || !block.Hash.SequenceEqual(Hash.HashBlock(block)))
                     return false;
             }
 
@@ -48,9 +57,9 @@ namespace Voting.Service.Services.BlockChainServices
 
         public void ReplaceChain(List<Block> newChain)
         {
-            if (newChain.Count <= BlockChain.Chain.Count)
+            if (newChain.Count < BlockChain.Chain.Count)
                 throw new Exception("Invalid New Chain Length");
-            else if (IsValidChain(newChain))
+            else if (!IsValidChain(newChain))
                 throw new Exception("Invalid New Chain");
 
             BlockChain.Chain = newChain;

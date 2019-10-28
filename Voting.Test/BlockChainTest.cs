@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using Votin.Model.Entities;
 using Voting.Infrastructure;
-using Voting.Service.Services.BlockChainServices;
-using Voting.Service.Services.BlockServices;
 using Xunit;
 
 namespace Voting.Test

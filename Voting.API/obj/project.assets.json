@@ -4464,20 +4464,6 @@
         "runtime": {
           "bin/placeholder/Voting.Infrastructure.dll": {}
         }
-      },
-      "Voting.Service/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v2.1",
-        "dependencies": {
-          "Votin.Model": "1.0.0",
-          "Voting.Infrastructure": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/Voting.Service.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Voting.Service.dll": {}
-        }
       }
     }
   },
@@ -12041,11 +12027,6 @@
       "type": "project",
       "path": "../Voting.Infrastructure/Voting.Infrastructure.csproj",
       "msbuildProject": "../Voting.Infrastructure/Voting.Infrastructure.csproj"
-    },
-    "Voting.Service/1.0.0": {
-      "type": "project",
-      "path": "../VotingService/Voting.Service.csproj",
-      "msbuildProject": "../VotingService/Voting.Service.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -12054,7 +12035,7 @@
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.Extensions.Configuration.Abstractions >= 2.2.0",
       "Microsoft.NETCore.App >= 2.2.0",
-      "Voting.Service >= 1.0.0"
+      "Voting.Infrastructure >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -12087,8 +12068,8 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Users\\Ahmad\\Desktop\\VotingBlockChain\\VotingService\\Voting.Service.csproj": {
-              "projectPath": "C:\\Users\\Ahmad\\Desktop\\VotingBlockChain\\VotingService\\Voting.Service.csproj"
+            "C:\\Users\\Ahmad\\Desktop\\VotingBlockChain\\Voting.Infrastructure\\Voting.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\Ahmad\\Desktop\\VotingBlockChain\\Voting.Infrastructure\\Voting.Infrastructure.csproj"
             }
           }
         }

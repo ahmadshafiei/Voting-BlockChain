@@ -5,8 +5,6 @@ C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.API\bin\Debug\netcoreapp2.2\Votin
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.API\bin\Debug\netcoreapp2.2\Voting.API.pdb
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.API\bin\Debug\netcoreapp2.2\Votin.Model.dll
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.API\bin\Debug\netcoreapp2.2\Voting.Infrastructure.dll
-C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.API\bin\Debug\netcoreapp2.2\Voting.Service.dll
-C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.API\bin\Debug\netcoreapp2.2\Voting.Service.pdb
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.API\bin\Debug\netcoreapp2.2\Votin.Model.pdb
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.API\bin\Debug\netcoreapp2.2\Voting.Infrastructure.pdb
 C:\Users\Ahmad\Desktop\VotingBlockChain\Voting.API\obj\Debug\netcoreapp2.2\Voting.API.csprojAssemblyReference.cache

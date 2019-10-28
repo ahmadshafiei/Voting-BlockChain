@@ -28,7 +28,7 @@
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.Extensions.Configuration.Abstractions": "2.2.0",
           "Microsoft.NETCore.App": "2.2.0",
-          "Voting.Service": "1.0.0"
+          "Voting.Infrastructure": "1.0.0"
         },
         "runtime": {
           "Voting.API.dll": {}
@@ -96,18 +96,6 @@
         },
         "compile": {
           "Voting.Infrastructure.dll": {}
-        }
-      },
-      "Voting.Service/1.0.0": {
-        "dependencies": {
-          "Votin.Model": "1.0.0",
-          "Voting.Infrastructure": "1.0.0"
-        },
-        "runtime": {
-          "Voting.Service.dll": {}
-        },
-        "compile": {
-          "Voting.Service.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -3315,11 +3303,6 @@
       "sha512": ""
     },
     "Voting.Infrastructure/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Voting.Service/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

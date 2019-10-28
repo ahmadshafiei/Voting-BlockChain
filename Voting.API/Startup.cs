@@ -11,8 +11,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Voting.Infrastructure;
 using Voting.Infrastructure.PeerToPeer;
-using Voting.Service.Services.BlockChainServices;
-using Voting.Service.Services.BlockServices;
+using Voting.Infrastructure.Services.BlockChainServices;
+using Voting.Infrastructure.Services.BlockServices;
 
 namespace Voting.API
 {
@@ -31,16 +31,20 @@ namespace Voting.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddSingleton<BlockChain>();
-            services.AddSingleton(new P2PNetwork(_configuration));
-
             services.AddSingleton<BlockService>();
-            services.AddTransient<BlockChainService>();
+            services.AddSingleton<BlockChainService>();
+
+            services.AddSingleton<BlockChain>();
+            services.AddSingleton<P2PNetwork>();
+
+            services.AddSingleton<IConfiguration>(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.ApplicationServices.GetService<P2PNetwork>().InitialNetwrok();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -48,5 +52,6 @@ namespace Voting.API
 
             app.UseMvc();
         }
+
     }
 }

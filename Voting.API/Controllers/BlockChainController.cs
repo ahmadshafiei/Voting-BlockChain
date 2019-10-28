@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Votin.Model.API.BlockChain;
-using Votin.Model.Entities;
 using Voting.Infrastructure;
-using Voting.Service.Services.BlockChainServices;
-using Voting.Service.Services.BlockServices;
+using Voting.Infrastructure.Services.BlockChainServices;
+using Voting.Infrastructure.Services.BlockServices;
 
 namespace Voting.API.Controllers
 {

@@ -4,7 +4,7 @@ using System.Text;
 using Votin.Model.Entities;
 using Voting.Infrastructure.Utility;
 
-namespace Voting.Service.Services.BlockServices
+namespace Voting.Infrastructure.Services.BlockServices
 {
     public class BlockService
     {

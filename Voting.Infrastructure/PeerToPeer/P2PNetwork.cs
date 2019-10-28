@@ -9,6 +9,11 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using Voting.Infrastructure.Utility;
+using System.Diagnostics;
+using Newtonsoft.Json;
+using Votin.Model.Entities;
+using Voting.Infrastructure.Services.BlockChainServices;
 
 namespace Voting.Infrastructure.PeerToPeer
 {
@@ -17,6 +22,8 @@ namespace Voting.Infrastructure.PeerToPeer
         private ManualResetEvent allDone = new ManualResetEvent(false);
         private ManualResetEvent messageManualReset = new ManualResetEvent(false);
         private readonly IPAddress localhost = IPAddress.Parse("127.0.0.1");
+
+        private BlockChainService _blockChainServie;
 
         /// <summary>
         /// Exposed with this port
@@ -35,14 +42,18 @@ namespace Voting.Infrastructure.PeerToPeer
         /// </summary>
         private List<Socket> _sockets = new List<Socket>();
 
-        public P2PNetwork(IConfiguration configuration)
+        public P2PNetwork(IConfiguration configuration, BlockChainService blockChainService)
         {
+            _blockChainServie = blockChainService;
             _p2pPort = Environment.GetEnvironmentVariable("P2P_PORT") != null ?
                 Convert.ToInt32(Environment.GetEnvironmentVariable("P2P_PORT")) :
                 Convert.ToInt32(configuration.GetSection("P2P").GetSection("DEFAULT_PORT").Value);
 
             Console.WriteLine($"Current P2P_Port : {_p2pPort}");
+        }
 
+        public void InitialNetwrok()
+        {
             ConnectToPeers();
             ListenForPeers();
         }
@@ -62,7 +73,7 @@ namespace Voting.Infrastructure.PeerToPeer
                 _sockets.Add(socket);
                 MessageHandler(socket);
                 SendMessage(socket);
-                Console.WriteLine($"Connected to initial peer {peerAddress}");
+                Debug.WriteLine($"Connected to initial peer {peerAddress}");
             }
             catch (Exception e)
             {
@@ -99,6 +110,7 @@ namespace Voting.Infrastructure.PeerToPeer
 
             _sockets.Add(clientSocket);
             MessageHandler(clientSocket);
+            SendMessage(clientSocket);
 
             Console.WriteLine("Peer Connected");
 
@@ -107,13 +119,19 @@ namespace Voting.Infrastructure.PeerToPeer
 
         private void SendMessage(Socket socket)
         {
-            byte[] data = Encoding.UTF8.GetBytes("SUCK IT");
-            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(BlockChain.Chain));
+            byte[] dataLength = data.Length.To4Byte();
             byte[] packet = dataLength.Concat(data).ToArray();
 
-            Console.WriteLine("Begin Message Send");
+            try
+            {
+                int s = socket.Send(packet);
+            }
+            catch (Exception e)
+            {
 
-            socket.Send(packet);
+                throw;
+            }
 
             Console.WriteLine("Data Sent");
         }
@@ -122,7 +140,6 @@ namespace Voting.Infrastructure.PeerToPeer
         {
             Task.Run(() =>
             {
-
                 while (true)
                 {
                     messageManualReset.Reset();
@@ -132,12 +149,17 @@ namespace Voting.Infrastructure.PeerToPeer
                         workSocket = socket
                     };
 
-                    //byte[] bufferSize = new byte[4];
-                    //socket.Receive(bufferSize);
+                    byte[] bufferSize = new byte[4];
+                    socket.Receive(bufferSize);
 
-                    //state.BufferSize = Convert.ToInt32(bufferSize);
+                    //Little Endian
+                    state.BufferSize = BitConverter.ToInt32(bufferSize.Reverse().ToArray());
 
-                    socket.BeginReceive(state.buffer, 0, 1000, SocketFlags.None, HandleData, state);
+                    Console.WriteLine();
+                    Console.WriteLine("WAITING FOR MESSAGE");
+                    Console.WriteLine();
+
+                    socket.BeginReceive(state.buffer, 0, state.BufferSize, SocketFlags.None, HandleData, state);
 
                     messageManualReset.WaitOne();
                 }
@@ -149,20 +171,33 @@ namespace Voting.Infrastructure.PeerToPeer
         {
             var state = (StateObject)ar.AsyncState;
 
-            var s = Encoding.UTF8.GetString(state.buffer);
+            try
+            {
+                List<Block> incomingChain = state.data;
 
-            state.workSocket.EndAccept(ar);
+                _blockChainServie.ReplaceChain(incomingChain);
 
-            Console.WriteLine(state.data);
+                Console.WriteLine("Received Data : ");
+                Console.WriteLine(Encoding.UTF8.GetString(state.buffer));
 
-            messageManualReset.Set();
+            }
+            finally
+            {
+                messageManualReset.Set();
+                state.workSocket.EndReceive(ar);
+            }
+        }
+
+        public void SyncChains()
+        {
+            _sockets.ForEach(s => SendMessage(s));
         }
     }
 
     public class StateObject
     {
         // Client  socket.  
-        public Socket workSocket = null;
+        public Socket workSocket;
 
         // Size of receive buffer.  
         private int _bufferSize;
@@ -181,13 +216,13 @@ namespace Voting.Infrastructure.PeerToPeer
         }
 
         // Receive buffer.  
-        public byte[] buffer = new byte[1000];
+        public byte[] buffer;
         // Received data string.  
-        public string data
+        public List<Block> data
         {
             get
             {
-                return Convert.ToString(buffer);
+                return JsonConvert.DeserializeObject<List<Block>>(Encoding.UTF8.GetString(buffer));
             }
         }
     }
