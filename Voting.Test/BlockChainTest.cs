@@ -78,5 +78,11 @@ namespace Voting.Test
         {
 
         }
+
+        [Fact]
+        public void Block_MineBlock_DifficultyApplied()
+        {
+
+        }
     }
 }

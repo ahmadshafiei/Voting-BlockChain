@@ -7,11 +7,11 @@ namespace Votin.Model.Entities
 {
     public class Block
     {
-        public int Id { get; set; }
         public long Timestamp { get; set; }
         public byte[] Hash { get; set; }
         public byte[] PreviousHash { get; set; }
         public string Data { get; set; }
+        public int Nonce { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -20,16 +20,17 @@ namespace Votin.Model.Entities
 
         public override int GetHashCode()
         {
-            return Id;
+            return base.GetHashCode();
         }
 
         public override string ToString()
         {
-            return $@"Block({Id}) -
+            return $@"Block -
                         Timestamp     : {Timestamp}
                         Previous Hash : {PreviousHash}                      
                         Hash          : {Hash}
-                        Data          : {Data}";
+                        Data          : {Data}
+                        Nonce         : {Nonce}";
         }
     }
 }

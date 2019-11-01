@@ -32,7 +32,8 @@ namespace Voting.Infrastructure
             {
                 Timestamp = DateTime.MinValue.Ticks,
                 Data = null,
-                PreviousHash = null
+                PreviousHash = null,
+                Nonce = 0
             };
 
             genesis.Hash = Hash.HashBlock(genesis);
