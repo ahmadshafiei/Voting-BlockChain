@@ -12,7 +12,7 @@ namespace Voting.Infrastructure.Utility
 
         public static byte[] HashBlock(this Block block)
         {
-            string hashValue = $"{block.Timestamp}-{block.PreviousHash}-{block.Data}-{block.Nonce}";
+            string hashValue = $"{block.Timestamp}-{block.PreviousHash}-{block.Data}-{block.Nonce}-{block.Difficulty}";
 
             return HashString(hashValue);
         }

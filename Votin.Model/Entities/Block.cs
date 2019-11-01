@@ -12,6 +12,7 @@ namespace Votin.Model.Entities
         public byte[] PreviousHash { get; set; }
         public string Data { get; set; }
         public int Nonce { get; set; }
+        public int Difficulty { get; set; } = Config.DIFFICULTY;
 
         public override bool Equals(object obj)
         {
@@ -30,7 +31,8 @@ namespace Votin.Model.Entities
                         Previous Hash : {PreviousHash}                      
                         Hash          : {Hash}
                         Data          : {Data}
-                        Nonce         : {Nonce}";
+                        Nonce         : {Nonce}
+                        Difficulty    : {Difficulty}";
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using Votin.Model.API.BlockChain;
 using Voting.Infrastructure;
 using Voting.Infrastructure.Services.BlockChainServices;
@@ -13,7 +14,7 @@ namespace Voting.API.Controllers
         private BlockService _blockService;
         private BlockChainService _blockChainService;
 
-        public BlockChainController(BlockChainService blockChainService , BlockService blockService)
+        public BlockChainController(BlockChainService blockChainService, BlockService blockService)
         {
             _blockService = blockService;
             _blockChainService = blockChainService;
@@ -22,6 +23,9 @@ namespace Voting.API.Controllers
         [HttpGet]
         public IActionResult GetBlockChain()
         {
+            foreach (var block in BlockChain.Chain)
+                Console.WriteLine(block);
+
             return Ok(BlockChain.Chain);
         }
 

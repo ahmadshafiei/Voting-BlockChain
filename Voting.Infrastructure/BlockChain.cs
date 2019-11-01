@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Votin.Model;
 using Votin.Model.Entities;
 using Voting.Infrastructure.Utility;
 
@@ -30,10 +31,11 @@ namespace Voting.Infrastructure
         {
             Block genesis = new Block
             {
-                Timestamp = DateTime.MinValue.Ticks,
+                Timestamp = DateTime.Now.Ticks,
                 Data = null,
                 PreviousHash = null,
-                Nonce = 0
+                Nonce = 0,
+                Difficulty = Config.DIFFICULTY
             };
 
             genesis.Hash = Hash.HashBlock(genesis);
