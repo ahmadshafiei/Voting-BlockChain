@@ -10,7 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Voting.Infrastructure;
+using Voting.Infrastructure.MiddleWares;
 using Voting.Infrastructure.PeerToPeer;
+using Voting.Infrastructure.Services;
 using Voting.Infrastructure.Services.BlockChainServices;
 using Voting.Infrastructure.Services.BlockServices;
 
@@ -33,6 +35,9 @@ namespace Voting.API
 
             services.AddSingleton<BlockService>();
             services.AddSingleton<BlockChainService>();
+            services.AddSingleton<TransactionPoolService>();
+            services.AddSingleton<TransactionService>();
+            services.AddSingleton<WalletService>();
 
             services.AddSingleton<BlockChain>();
             services.AddSingleton<P2PNetwork>();
@@ -45,12 +50,16 @@ namespace Voting.API
         {
             app.ApplicationServices.GetService<P2PNetwork>().InitialNetwrok();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+
+            app.UseExceptionHandlerMiddleware();
+
 
             app.UseMvc();
+
         }
 
     }

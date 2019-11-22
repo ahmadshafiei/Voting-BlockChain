@@ -677,6 +677,80 @@
           }
         }
       },
+      "Nethereum.Hex/3.4.0": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "[10.0.3, 13.0.0)",
+          "Portable.BouncyCastle": "1.8.2"
+        },
+        "compile": {
+          "lib/netcoreapp2.1/Nethereum.Hex.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/Nethereum.Hex.dll": {}
+        }
+      },
+      "Nethereum.Model/3.4.0": {
+        "type": "package",
+        "dependencies": {
+          "Nethereum.RLP": "3.4.0",
+          "Nethereum.Util": "3.4.0",
+          "Newtonsoft.Json": "[10.0.3, 13.0.0)",
+          "Portable.BouncyCastle": "1.8.2"
+        },
+        "compile": {
+          "lib/netcoreapp2.1/Nethereum.Model.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/Nethereum.Model.dll": {}
+        }
+      },
+      "Nethereum.RLP/3.4.0": {
+        "type": "package",
+        "dependencies": {
+          "Nethereum.Hex": "3.4.0",
+          "Newtonsoft.Json": "[10.0.3, 13.0.0)",
+          "Portable.BouncyCastle": "1.8.2"
+        },
+        "compile": {
+          "lib/netcoreapp2.1/Nethereum.RLP.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/Nethereum.RLP.dll": {}
+        }
+      },
+      "Nethereum.Signer/3.4.0": {
+        "type": "package",
+        "dependencies": {
+          "Nethereum.Hex": "3.4.0",
+          "Nethereum.Model": "3.4.0",
+          "Nethereum.RLP": "3.4.0",
+          "Nethereum.Util": "3.4.0",
+          "Newtonsoft.Json": "[10.0.3, 13.0.0)",
+          "Portable.BouncyCastle": "1.8.2"
+        },
+        "compile": {
+          "lib/netcoreapp2.1/Nethereum.Signer.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/Nethereum.Signer.dll": {}
+        }
+      },
+      "Nethereum.Util/3.4.0": {
+        "type": "package",
+        "dependencies": {
+          "Nethereum.Hex": "3.4.0",
+          "Nethereum.RLP": "3.4.0",
+          "Newtonsoft.Json": "[10.0.3, 13.0.0)",
+          "Portable.BouncyCastle": "1.8.2"
+        },
+        "compile": {
+          "lib/netcoreapp2.1/Nethereum.Util.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/Nethereum.Util.dll": {}
+        }
+      },
       "NETStandard.Library/2.0.3": {
         "type": "package",
         "dependencies": {
@@ -699,6 +773,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "Portable.BouncyCastle/1.8.2": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {}
         }
       },
       "runtime.native.System/4.0.0": {
@@ -1783,6 +1866,11 @@
       "Votin.Model/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.1",
+        "dependencies": {
+          "Nethereum.Hex": "3.4.0",
+          "Nethereum.Signer": "3.4.0",
+          "Nethereum.Util": "3.4.0"
+        },
         "compile": {
           "bin/placeholder/Votin.Model.dll": {}
         },
@@ -2650,6 +2738,81 @@
         "runtimes/win/lib/netstandard1.3/Microsoft.Win32.Registry.dll"
       ]
     },
+    "Nethereum.Hex/3.4.0": {
+      "sha512": "x2UBq7ctxpH3T/Q+Dg1GRWnIDCrZzL7VkjJLbNWmvTWDofy0Uvozkr/coCZA4Ip6RhYwSiCthJklt60moCtAOQ==",
+      "type": "package",
+      "path": "nethereum.hex/3.4.0",
+      "files": [
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net451/Nethereum.Hex.dll",
+        "lib/netcoreapp2.1/Nethereum.Hex.dll",
+        "lib/netstandard1.1/Nethereum.Hex.dll",
+        "lib/netstandard2.0/Nethereum.Hex.dll",
+        "nethereum.hex.3.4.0.nupkg.sha512",
+        "nethereum.hex.nuspec"
+      ]
+    },
+    "Nethereum.Model/3.4.0": {
+      "sha512": "Sj/ZNPbZS0kopk0V7qtrh0UUoJZQgzG492Mdc/EzYUOnjmu/bY/P1ZruqBRuTTkIsFwXy8mnx9VyaWveaSRLqw==",
+      "type": "package",
+      "path": "nethereum.model/3.4.0",
+      "files": [
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net451/Nethereum.Model.dll",
+        "lib/netcoreapp2.1/Nethereum.Model.dll",
+        "lib/netstandard1.1/Nethereum.Model.dll",
+        "lib/netstandard2.0/Nethereum.Model.dll",
+        "nethereum.model.3.4.0.nupkg.sha512",
+        "nethereum.model.nuspec"
+      ]
+    },
+    "Nethereum.RLP/3.4.0": {
+      "sha512": "d0VTRbSuGYkyaovpsohluPvSc8jJtRilX56JX1TUa/fsUxKzuZ7Pbf3rtRrh0UECADBLrPkfWry7tJprh47JfA==",
+      "type": "package",
+      "path": "nethereum.rlp/3.4.0",
+      "files": [
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net451/Nethereum.RLP.dll",
+        "lib/netcoreapp2.1/Nethereum.RLP.dll",
+        "lib/netstandard1.1/Nethereum.RLP.dll",
+        "lib/netstandard2.0/Nethereum.RLP.dll",
+        "nethereum.rlp.3.4.0.nupkg.sha512",
+        "nethereum.rlp.nuspec"
+      ]
+    },
+    "Nethereum.Signer/3.4.0": {
+      "sha512": "RzfzTgQqAX9hKeEjco8dkGD6IWvztn42xBcBsZMY+BORRpz4CRV5CIMK0kwkMlnB4cTSVbvRk3tHzKBCrk+r2g==",
+      "type": "package",
+      "path": "nethereum.signer/3.4.0",
+      "files": [
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net451/Nethereum.Signer.dll",
+        "lib/netcoreapp2.1/Nethereum.Signer.dll",
+        "lib/netstandard1.1/Nethereum.Signer.dll",
+        "lib/netstandard2.0/Nethereum.Signer.dll",
+        "nethereum.signer.3.4.0.nupkg.sha512",
+        "nethereum.signer.nuspec"
+      ]
+    },
+    "Nethereum.Util/3.4.0": {
+      "sha512": "mcDs7GZCXx7vXdggQRd6Me4cAQNdAvGGMbcLoSgUYFxpSKktnGxf7ZZTCR9Ikp3mpMSg9K8jdCP81pNvN5bO2Q==",
+      "type": "package",
+      "path": "nethereum.util/3.4.0",
+      "files": [
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net451/Nethereum.Util.dll",
+        "lib/netcoreapp2.1/Nethereum.Util.dll",
+        "lib/netstandard1.1/Nethereum.Util.dll",
+        "lib/netstandard2.0/Nethereum.Util.dll",
+        "nethereum.util.3.4.0.nupkg.sha512",
+        "nethereum.util.nuspec"
+      ]
+    },
     "NETStandard.Library/2.0.3": {
       "sha512": "st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
       "type": "package",
@@ -2805,6 +2968,26 @@
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
         "newtonsoft.json.12.0.2.nupkg.sha512",
         "newtonsoft.json.nuspec"
+      ]
+    },
+    "Portable.BouncyCastle/1.8.2": {
+      "sha512": "oVhFVbTNx02DA83ssNKLI1GGQGb2EJK/OazEqlJGaowtvAZhjxLjhgb9lVuyhzY1n5+PslBffTXHPe97TmNZvg==",
+      "type": "package",
+      "path": "portable.bouncycastle/1.8.2",
+      "files": [
+        ".signature.p7s",
+        "lib/net40/BouncyCastle.Crypto.dll",
+        "lib/net40/BouncyCastle.Crypto.xml",
+        "lib/netstandard1.0/BouncyCastle.Crypto.dll",
+        "lib/netstandard1.0/BouncyCastle.Crypto.xml",
+        "lib/netstandard1.3/BouncyCastle.Crypto.dll",
+        "lib/netstandard1.3/BouncyCastle.Crypto.xml",
+        "lib/netstandard2.0/BouncyCastle.Crypto.dll",
+        "lib/netstandard2.0/BouncyCastle.Crypto.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/BouncyCastle.Crypto.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/BouncyCastle.Crypto.xml",
+        "portable.bouncycastle.1.8.2.nupkg.sha512",
+        "portable.bouncycastle.nuspec"
       ]
     },
     "runtime.native.System/4.0.0": {

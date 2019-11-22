@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,6 +16,11 @@ namespace Voting.Infrastructure.Utility
             string hashValue = $"{block.Timestamp}-{block.PreviousHash}-{block.Data}-{block.Nonce}-{block.Difficulty}";
 
             return HashString(hashValue);
+        }
+
+        public static byte[] HashTransactionOutput(params TransactionOutput[] outputs)
+        {
+            return HashString(JsonConvert.SerializeObject(outputs));
         }
 
         private static byte[] HashString(string data)

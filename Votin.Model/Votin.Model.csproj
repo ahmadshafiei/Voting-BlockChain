@@ -4,4 +4,10 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Nethereum.Hex" Version="3.4.0" />
+    <PackageReference Include="Nethereum.Signer" Version="3.4.0" />
+    <PackageReference Include="Nethereum.Util" Version="3.4.0" />
+  </ItemGroup>
+
 </Project>

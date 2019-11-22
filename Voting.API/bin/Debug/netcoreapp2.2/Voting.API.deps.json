@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "ba6f04847cb7e308c1f8de8029eee804346b5c40"
+    "signature": "cc87acf0c057b93cf06a287571db31917258ba6e"
   },
   "compilationOptions": {
     "defines": [
@@ -54,6 +54,90 @@
           "lib/netstandard2.0/Microsoft.AspNetCore.WebSockets.dll": {}
         }
       },
+      "Nethereum.Hex/3.4.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.2",
+          "Portable.BouncyCastle": "1.8.2"
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/Nethereum.Hex.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp2.1/Nethereum.Hex.dll": {}
+        }
+      },
+      "Nethereum.Model/3.4.0": {
+        "dependencies": {
+          "Nethereum.RLP": "3.4.0",
+          "Nethereum.Util": "3.4.0",
+          "Newtonsoft.Json": "12.0.2",
+          "Portable.BouncyCastle": "1.8.2"
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/Nethereum.Model.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp2.1/Nethereum.Model.dll": {}
+        }
+      },
+      "Nethereum.RLP/3.4.0": {
+        "dependencies": {
+          "Nethereum.Hex": "3.4.0",
+          "Newtonsoft.Json": "12.0.2",
+          "Portable.BouncyCastle": "1.8.2"
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/Nethereum.RLP.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp2.1/Nethereum.RLP.dll": {}
+        }
+      },
+      "Nethereum.Signer/3.4.0": {
+        "dependencies": {
+          "Nethereum.Hex": "3.4.0",
+          "Nethereum.Model": "3.4.0",
+          "Nethereum.RLP": "3.4.0",
+          "Nethereum.Util": "3.4.0",
+          "Newtonsoft.Json": "12.0.2",
+          "Portable.BouncyCastle": "1.8.2"
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/Nethereum.Signer.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp2.1/Nethereum.Signer.dll": {}
+        }
+      },
+      "Nethereum.Util/3.4.0": {
+        "dependencies": {
+          "Nethereum.Hex": "3.4.0",
+          "Nethereum.RLP": "3.4.0",
+          "Newtonsoft.Json": "12.0.2",
+          "Portable.BouncyCastle": "1.8.2"
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/Nethereum.Util.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp2.1/Nethereum.Util.dll": {}
+        }
+      },
       "Newtonsoft.Json/12.0.2": {
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {
@@ -63,6 +147,17 @@
         },
         "compile": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "Portable.BouncyCastle/1.8.2": {
+        "runtime": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
+            "assemblyVersion": "1.8.2.0",
+            "fileVersion": "1.8.2.223"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {}
         }
       },
       "System.Net.WebSockets.WebSocketProtocol/4.5.3": {
@@ -77,6 +172,11 @@
         }
       },
       "Votin.Model/1.0.0": {
+        "dependencies": {
+          "Nethereum.Hex": "3.4.0",
+          "Nethereum.Signer": "3.4.0",
+          "Nethereum.Util": "3.4.0"
+        },
         "runtime": {
           "Votin.Model.dll": {}
         },
@@ -3283,12 +3383,54 @@
       "path": "microsoft.aspnetcore.websockets/2.2.1",
       "hashPath": "microsoft.aspnetcore.websockets.2.2.1.nupkg.sha512"
     },
+    "Nethereum.Hex/3.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-x2UBq7ctxpH3T/Q+Dg1GRWnIDCrZzL7VkjJLbNWmvTWDofy0Uvozkr/coCZA4Ip6RhYwSiCthJklt60moCtAOQ==",
+      "path": "nethereum.hex/3.4.0",
+      "hashPath": "nethereum.hex.3.4.0.nupkg.sha512"
+    },
+    "Nethereum.Model/3.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Sj/ZNPbZS0kopk0V7qtrh0UUoJZQgzG492Mdc/EzYUOnjmu/bY/P1ZruqBRuTTkIsFwXy8mnx9VyaWveaSRLqw==",
+      "path": "nethereum.model/3.4.0",
+      "hashPath": "nethereum.model.3.4.0.nupkg.sha512"
+    },
+    "Nethereum.RLP/3.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-d0VTRbSuGYkyaovpsohluPvSc8jJtRilX56JX1TUa/fsUxKzuZ7Pbf3rtRrh0UECADBLrPkfWry7tJprh47JfA==",
+      "path": "nethereum.rlp/3.4.0",
+      "hashPath": "nethereum.rlp.3.4.0.nupkg.sha512"
+    },
+    "Nethereum.Signer/3.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RzfzTgQqAX9hKeEjco8dkGD6IWvztn42xBcBsZMY+BORRpz4CRV5CIMK0kwkMlnB4cTSVbvRk3tHzKBCrk+r2g==",
+      "path": "nethereum.signer/3.4.0",
+      "hashPath": "nethereum.signer.3.4.0.nupkg.sha512"
+    },
+    "Nethereum.Util/3.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mcDs7GZCXx7vXdggQRd6Me4cAQNdAvGGMbcLoSgUYFxpSKktnGxf7ZZTCR9Ikp3mpMSg9K8jdCP81pNvN5bO2Q==",
+      "path": "nethereum.util/3.4.0",
+      "hashPath": "nethereum.util.3.4.0.nupkg.sha512"
+    },
     "Newtonsoft.Json/12.0.2": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-mtweBXPWhp1CMQATtBT7ZfMZrbZBTKfjGwz6Y75NwGjx/GztDaUnfw8GK9KZ2T4fDIqKJyDjc9Rxlw5+G2FcVA==",
       "path": "newtonsoft.json/12.0.2",
       "hashPath": "newtonsoft.json.12.0.2.nupkg.sha512"
+    },
+    "Portable.BouncyCastle/1.8.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oVhFVbTNx02DA83ssNKLI1GGQGb2EJK/OazEqlJGaowtvAZhjxLjhgb9lVuyhzY1n5+PslBffTXHPe97TmNZvg==",
+      "path": "portable.bouncycastle/1.8.2",
+      "hashPath": "portable.bouncycastle.1.8.2.nupkg.sha512"
     },
     "System.Net.WebSockets.WebSocketProtocol/4.5.3": {
       "type": "package",
