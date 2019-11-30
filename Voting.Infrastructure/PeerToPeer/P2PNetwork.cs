@@ -12,7 +12,7 @@ using System.Threading;
 using Voting.Infrastructure.Utility;
 using System.Diagnostics;
 using Newtonsoft.Json;
-using Votin.Model.Entities;
+using Voting.Model.Entities;
 using Voting.Infrastructure.Services.BlockChainServices;
 using Voting.Infrastructure.Services;
 
@@ -159,7 +159,23 @@ namespace Voting.Infrastructure.PeerToPeer
             }
 
             Console.WriteLine("Transaction Data Sent");
+        }
 
+        private void BroadcastClearTransactionPoolToPeers(Socket socket)
+        {
+            byte[] dataType = new byte[] { Convert.ToByte(value: (int)MessageType.ClearTransaction) };
+            byte[] packet = dataType.ToArray();
+
+            try
+            {
+                int s = socket.Send(packet);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+            Console.WriteLine("TransactionClear Data Sent");
         }
 
         private void BlockchainMessageHandler(Socket socket)
@@ -180,28 +196,31 @@ namespace Voting.Infrastructure.PeerToPeer
 
                     AsyncCallback handler = HandleTransactionData;
 
-                    if (messageType.First() == 1)
+                    if ((MessageType)messageType.First() == MessageType.Blockchain)
                         handler = HandleBlockchainData;
-                    else if (messageType.First() == 2)
+                    else if ((MessageType)messageType.First() == MessageType.Transaction)
                         handler = HandleTransactionData;
+                    else if ((MessageType)messageType.First() == MessageType.ClearTransaction)
+                    {
+                        _transactionPoolService.ClearPool();
+                        messageManualReset.Set();
+                        continue;
+                    }
 
                     byte[] bufferSize = new byte[4];
                     socket.Receive(bufferSize);
 
                     //Little Endian
                     state.BufferSize = BitConverter.ToInt32(bufferSize.Reverse().ToArray());
-
-                    Console.WriteLine();
+                    
                     Console.WriteLine("WAITING FOR MESSAGE");
-                    Console.WriteLine();
-
+                    
                     try
                     {
                         socket.BeginReceive(state.buffer, 0, state.BufferSize, SocketFlags.None, handler, state);
                     }
                     catch (Exception e)
                     {
-
                         throw;
                     }
 
@@ -241,7 +260,6 @@ namespace Voting.Infrastructure.PeerToPeer
                 Transaction transaction = state.Transaction;
 
                 _transactionPoolService.UpdateOrAddTransaction(transaction);
-                //_blockChainServie.ReplaceChain(incomingChain);
 
                 Console.WriteLine("Received Transaction : ");
                 Console.WriteLine(Encoding.UTF8.GetString(state.buffer));
@@ -263,6 +281,11 @@ namespace Voting.Infrastructure.PeerToPeer
         {
             _sockets.ForEach(s => BroadcastTransactionToPeers(s, transaction));
         }
+        public void BroadcastClearTransactionPool()
+        {
+            _sockets.ForEach(s => BroadcastClearTransactionPoolToPeers(s));
+        }
+
     }
 
     public class StateObject
@@ -309,6 +332,7 @@ namespace Voting.Infrastructure.PeerToPeer
     public enum MessageType : byte
     {
         Blockchain = 1,
-        Transaction = 2
+        Transaction = 2,
+        ClearTransaction = 3
     }
 }

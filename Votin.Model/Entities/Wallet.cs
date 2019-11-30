@@ -2,7 +2,7 @@
 using Nethereum.Signer;
 using System.Security.Cryptography;
 
-namespace Votin.Model.Entities
+namespace Voting.Model.Entities
 {
     public class Wallet
     {

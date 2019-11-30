@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Votin.Model;
-using Votin.Model.Entities;
+using Voting.Model;
+using Voting.Model.Entities;
 using Voting.Infrastructure.Utility;
 
 namespace Voting.Infrastructure.Services.BlockServices
@@ -19,7 +19,7 @@ namespace Voting.Infrastructure.Services.BlockServices
         /// </summary>
         /// <param name="previousBlock">Previous block in chain</param>
         /// <returns>Newly added block</returns>
-        public Block MineBlock(Block previousBlock, string data)
+        public Block MineBlock(Block previousBlock, List<Transaction> data)
         {
             Block block = new Block
             {

@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Voting.Model;
 
-namespace Votin.Model.Entities
+namespace Voting.Model.Entities
 {
     public class Block
     {
         public long Timestamp { get; set; }
         public byte[] Hash { get; set; }
         public byte[] PreviousHash { get; set; }
-        public string Data { get; set; }
+        public List<Transaction> Data { get; set; }
         public int Nonce { get; set; }
         public int Difficulty { get; set; } = Config.DIFFICULTY;
 
         public override bool Equals(object obj)
         {
-            return Hash.SequenceEqual(((Block)obj).Hash);
+            if (obj.GetType() == typeof(Block))
+                return Hash.SequenceEqual(((Block)obj).Hash);
+
+            return false;
         }
 
         public override int GetHashCode()

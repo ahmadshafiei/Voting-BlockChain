@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace Votin.Model.API.BlockChain
+namespace Voting.Model.API.BlockChain
 {
     public class TransactionData
     {

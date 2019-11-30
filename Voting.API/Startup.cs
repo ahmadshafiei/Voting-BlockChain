@@ -38,6 +38,7 @@ namespace Voting.API
             services.AddSingleton<TransactionPoolService>();
             services.AddSingleton<TransactionService>();
             services.AddSingleton<WalletService>();
+            services.AddSingleton<MinerService>();
 
             services.AddSingleton<BlockChain>();
             services.AddSingleton<P2PNetwork>();

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Votin.Model.Entities;
-using Votin.Model.Exceptions;
+using Voting.Model;
+using Voting.Model.Entities;
+using Voting.Model.Exceptions;
 using Voting.Infrastructure.Utility;
 
 namespace Voting.Infrastructure.Services
@@ -23,13 +24,26 @@ namespace Voting.Infrastructure.Services
             if (sender.Balance < amount)
                 throw new InvalidTransactionException("مقدار تراکنش بیشتر از موجودی والت می باشد");
 
-            var transaction = new Transaction
-            {
-                Outputs = new List<TransactionOutput>
+            return TransactionWithOutputs(sender, recipient, new List<TransactionOutput>
                 {
                     new TransactionOutput(sender.Balance - amount , sender.PublicKey),
                     new TransactionOutput(amount ,  recipient)
-                }
+                }.ToArray());
+        }
+
+        public Transaction RewardTransaction(Wallet minerWallet, Wallet blockchainWallet)
+        {
+            return TransactionWithOutputs(blockchainWallet, minerWallet.PublicKey, new List<TransactionOutput>
+            {
+                new TransactionOutput(Config.MINING_REWARD , minerWallet.PublicKey)
+            }.ToArray());
+        }
+
+        private Transaction TransactionWithOutputs(Wallet sender, string recipient, params TransactionOutput[] outputs)
+        {
+            var transaction = new Transaction
+            {
+                Outputs = outputs.ToList()
             };
 
             SignTransaction(transaction, sender);

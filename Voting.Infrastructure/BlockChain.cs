@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Votin.Model;
-using Votin.Model.Entities;
+using Voting.Model;
+using Voting.Model.Entities;
 using Voting.Infrastructure.Utility;
 
 namespace Voting.Infrastructure

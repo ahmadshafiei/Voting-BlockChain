@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Votin.Model.Entities;
+using Voting.Model.Entities;
 using Voting.Infrastructure;
 using Voting.Infrastructure.Utility;
 using Voting.Infrastructure.Services.BlockServices;
@@ -23,7 +23,7 @@ namespace Voting.Infrastructure.Services.BlockChainServices
             _serviceProvider = serviceProvider;
         }
 
-        public List<Block> AddBlock(string data)
+        public Block AddBlock(List<Transaction> data)
         {
             Block lastBlock = BlockChain.Chain.Last();
 
@@ -35,7 +35,7 @@ namespace Voting.Infrastructure.Services.BlockChainServices
             _p2PNetwork = _serviceProvider.GetService<P2PNetwork>();
             _p2PNetwork.SyncChains();
 
-            return BlockChain.Chain;
+            return block;
         }
 
         public bool IsValidChain(List<Block> chain)

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Votin.Model.Exceptions;
+using Voting.Model.Exceptions;
 
 namespace Voting.Infrastructure.MiddleWares
 {

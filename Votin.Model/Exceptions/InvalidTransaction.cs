@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Votin.Model.Exceptions
+namespace Voting.Model.Exceptions
 {
     public class InvalidTransactionException : BlockChainException
     {

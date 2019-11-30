@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Votin.Model
+namespace Voting.Model
 {
     public class Config
     {
@@ -14,5 +14,7 @@ namespace Votin.Model
         public const int DIFFICULTY = 2;
 
         public const long MINE_RATE = TimeSpan.TicksPerSecond * 5;
+
+        public const int MINING_REWARD = 50;
     }
 }

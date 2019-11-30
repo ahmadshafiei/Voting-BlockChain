@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using Votin.Model.Exceptions;
+using Voting.Model.Exceptions;
 
-namespace Votin.Model.Entities
+namespace Voting.Model.Entities
 {
     public class Transaction
     {

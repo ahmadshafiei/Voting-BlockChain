@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using Votin.Model.Entities;
+using Voting.Model.Entities;
 
 namespace Voting.Infrastructure.Services
 {
@@ -27,6 +27,14 @@ namespace Voting.Infrastructure.Services
             transactionPool.UpdateOrAddTransaction(transaction);
 
             return transaction;
+        }
+
+        public static Wallet BlockchainWallet()
+        {
+            return new Wallet
+            {
+                PublicKey = "blockchain-wallet"
+            };
         }
     }
 }
