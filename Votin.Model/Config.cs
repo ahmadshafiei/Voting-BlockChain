@@ -7,9 +7,9 @@ namespace Voting.Model
     public class Config
     {
         /// <summary>
-        /// TODO: Should change to initial vote foreach person
+        /// Initial vote for every candidate in election
         /// </summary>
-        public const int INITIAL_BALANCE = 50;
+        public const int INITIAL_BALANCE = 0;
 
         public const int DIFFICULTY = 2;
 

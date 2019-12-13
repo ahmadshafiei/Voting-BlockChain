@@ -17,26 +17,14 @@ namespace Voting.Infrastructure.Services
         /// Implementation change so senders balance don't decrease on sending 
         /// </summary>
         /// <param name="sender">Voter</param>
-        /// <param name="recipient">Elected person</param>
+        /// <param name="candidateAddress">Candidate</param>
         /// <param name="amount">Vote count (actually it should be 1)</param>
-        public Transaction NewTransaction(Wallet sender, string recipient, int amount)
+        public Transaction NewTransaction(Wallet sender, string electionAddress, string candidateAddress)
         {
-            if (sender.Balance < amount)
-                throw new InvalidTransactionException("مقدار تراکنش بیشتر از موجودی والت می باشد");
-
-            return TransactionWithOutputs(sender, recipient, new List<TransactionOutput>
+            return TransactionWithOutputs(sender, candidateAddress, new List<TransactionOutput>
                 {
-                    new TransactionOutput(sender.Balance - amount , sender.PublicKey),
-                    new TransactionOutput(amount ,  recipient)
+                    new TransactionOutput(electionAddress , candidateAddress)
                 }.ToArray());
-        }
-
-        public Transaction RewardTransaction(Wallet minerWallet, Wallet blockchainWallet)
-        {
-            return TransactionWithOutputs(blockchainWallet, minerWallet.PublicKey, new List<TransactionOutput>
-            {
-                new TransactionOutput(Config.MINING_REWARD , minerWallet.PublicKey)
-            }.ToArray());
         }
 
         private Transaction TransactionWithOutputs(Wallet sender, string recipient, params TransactionOutput[] outputs)
@@ -51,19 +39,15 @@ namespace Voting.Infrastructure.Services
             return transaction;
         }
 
-        /// <summary>
-        /// See <see cref="NewTransaction"/> Documentation
-        /// </summary>
-        public Transaction UpdateTransaction(Transaction transaction, Wallet sender, string recipient, int amount)
+        public Transaction UpdateTransaction(Transaction transaction, Wallet sender, string electionAddress, string candidateAddress)
         {
-            TransactionOutput output = transaction.Outputs.Single(o => o.Address == sender.PublicKey);
+            if (transaction.Outputs.Any(o => o.ElectionAddress == electionAddress))
+            {
+                Console.WriteLine("You have already voted in this election");
+                return transaction;
+            }
 
-            if (amount > output.Amount)
-                throw new InvalidTransactionException("مقدار تراکنش بیشتر از موجودی والت می باشد");
-
-            output.Amount -= amount;
-
-            transaction.Outputs.Add(new TransactionOutput(amount, recipient));
+            transaction.Outputs.Add(new TransactionOutput(electionAddress, candidateAddress));
 
             SignTransaction(transaction, sender);
 
@@ -74,8 +58,6 @@ namespace Voting.Infrastructure.Services
         {
             transaction.Input = new TransactionInput
             {
-                TimeStamp = DateTime.Now,
-                Amount = sender.Balance,
                 Address = sender.PublicKey,
                 Signature = sender.Sign(Hash.HashTransactionOutput(transaction.Outputs.ToArray()))
             };

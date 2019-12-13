@@ -7,13 +7,21 @@ namespace Voting.Model.Entities
     public class Wallet
     {
         public EthECKey KeyPair { get; set; }
-        public int Balance { get; set; }
+
+        /// <summary>
+        /// Initial votes of candidate in election
+        /// </summary>
+        public int Balance { get; set; } = 0;
         public string PublicKey { get; set; }
 
-        public Wallet()
+        public Wallet(string privateKey = null)
         {
+            if (string.IsNullOrEmpty(privateKey))
+                KeyPair = EthECKey.GenerateKey();
+            else
+                KeyPair = new EthECKey(privateKey);
+
             Balance = Config.INITIAL_BALANCE;
-            KeyPair = EthECKey.GenerateKey();
             PublicKey = KeyPair.GetPubKey().ToHex();
         }
 

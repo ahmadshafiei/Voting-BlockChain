@@ -55,6 +55,7 @@ namespace Voting.Infrastructure.PeerToPeer
             _transactionPoolService = serviceProvider.GetService<TransactionPoolService>();
 
             Console.WriteLine($"Current P2P_Port : {_p2pPort}");
+            Console.WriteLine($"Initial Peers : {JsonConvert.SerializeObject(_peers)}");
         }
 
         public void InitialNetwrok()
@@ -71,14 +72,28 @@ namespace Voting.Infrastructure.PeerToPeer
         private void AddPeer(string peerAddress)
         {
             Socket socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+            IPAddress socketIP = null;
+            int socketPort = 0;
 
             try
             {
-                socket.Connect(IPAddress.Parse(peerAddress.Split(':')[1].Substring(2)), Convert.ToInt32(peerAddress.Split(':')[2]));
+                socketIP = IPAddress.Parse(peerAddress.Split(':')[1].Substring(2));
+                socketPort = Convert.ToInt32(peerAddress.Split(':')[2]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("---------- Invalid socket address of peer ----------");
+                Console.WriteLine("---------- Valid form of socket address : ws://X.X.X.X:PORT ----------");
+                return;
+            }
+
+            try
+            {
+                socket.Connect(socketIP, socketPort);
                 _sockets.Add(socket);
                 BlockchainMessageHandler(socket);
                 SendChainToPeers(socket);
-                Debug.WriteLine($"Connected to initial peer {peerAddress}");
+                Console.WriteLine($"Connected to initial peer {peerAddress}");
             }
             catch (Exception e)
             {
@@ -99,7 +114,7 @@ namespace Voting.Infrastructure.PeerToPeer
                 {
                     allDone.Reset();
 
-                    Console.WriteLine("Waiting For Connection ...");
+                    Console.WriteLine($"Waiting For Connection on port {_p2pPort} ...");
                     server.BeginAcceptSocket(AddSocket, server);
 
                     allDone.WaitOne();
@@ -132,14 +147,12 @@ namespace Voting.Infrastructure.PeerToPeer
             try
             {
                 int s = socket.Send(packet);
+                Console.WriteLine("Blockchain Broadcasted to peers");
             }
             catch (Exception e)
             {
-
-                throw;
+                throw e;
             }
-
-            Console.WriteLine("Blockchain Data Sent");
         }
 
         private void BroadcastTransactionToPeers(Socket socket, Transaction transaction)
@@ -152,13 +165,12 @@ namespace Voting.Infrastructure.PeerToPeer
             try
             {
                 int s = socket.Send(packet);
+                Console.WriteLine("Transaction Broadcasted to peers");
             }
             catch (Exception e)
             {
-                throw;
+                throw e;
             }
-
-            Console.WriteLine("Transaction Data Sent");
         }
 
         private void BroadcastClearTransactionPoolToPeers(Socket socket)
@@ -169,13 +181,12 @@ namespace Voting.Infrastructure.PeerToPeer
             try
             {
                 int s = socket.Send(packet);
+                Console.WriteLine("TransactionPool is clear");
             }
             catch (Exception e)
             {
-                throw;
+                throw e;
             }
-
-            Console.WriteLine("TransactionClear Data Sent");
         }
 
         private void BlockchainMessageHandler(Socket socket)
@@ -212,19 +223,20 @@ namespace Voting.Infrastructure.PeerToPeer
 
                     //Little Endian
                     state.BufferSize = BitConverter.ToInt32(bufferSize.Reverse().ToArray());
-                    
-                    Console.WriteLine("WAITING FOR MESSAGE");
-                    
+
                     try
                     {
                         socket.BeginReceive(state.buffer, 0, state.BufferSize, SocketFlags.None, handler, state);
                     }
                     catch (Exception e)
                     {
-                        throw;
+                        throw e;
+                    }
+                    finally
+                    {
+                        messageManualReset.WaitOne();
                     }
 
-                    messageManualReset.WaitOne();
                 }
 
             });
@@ -281,6 +293,7 @@ namespace Voting.Infrastructure.PeerToPeer
         {
             _sockets.ForEach(s => BroadcastTransactionToPeers(s, transaction));
         }
+
         public void BroadcastClearTransactionPool()
         {
             _sockets.ForEach(s => BroadcastClearTransactionPoolToPeers(s));

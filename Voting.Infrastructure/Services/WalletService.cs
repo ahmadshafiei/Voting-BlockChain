@@ -16,15 +16,14 @@ namespace Voting.Infrastructure.Services
             _transactionService = transactionService;
         }
 
-        public Transaction CreateTransaction(Wallet wallet, string recipient, int amount,TransactionPoolService transactionPool)
+        public Transaction CreateTransaction(Wallet wallet, string electionAddress, string candidateAddress, TransactionPoolService transactionPool)
         {
-            wallet.Balance = CalculateBalance(wallet);
             Transaction transaction = transactionPool.ExistingTransaction(wallet.PublicKey);
 
             if (transaction == null)
-                transaction = _transactionService.NewTransaction(wallet, recipient, amount);
+                transaction = _transactionService.NewTransaction(wallet, electionAddress, candidateAddress);
             else
-                _transactionService.UpdateTransaction(transaction, wallet, recipient, amount);
+                _transactionService.UpdateTransaction(transaction, wallet, electionAddress, candidateAddress);
 
             transactionPool.UpdateOrAddTransaction(transaction);
 
@@ -32,52 +31,18 @@ namespace Voting.Infrastructure.Services
         }
 
         /// <summary>
-        /// Which gives the total votes of a person
+        /// Calculate total votes for a candidate(or anyone actually) in the particular election
         /// </summary>
-        public int CalculateBalance(Wallet wallet)
+        public int CalculateBalance(Wallet wallet, string electionAddress)
         {
             int balance = wallet.Balance;
 
-            List<Transaction> transactions = BlockChain.Chain
-                .SelectMany(b => b.Data)
-                .ToList();
+            List<Transaction> votes = BlockChain.Chain.SelectMany(c => c.Data).ToList();
 
-            List<Transaction> walletTransactions = transactions
-                .Where(t => t.Input.Address == wallet.PublicKey)
-                .ToList();
-
-            DateTime startTime = DateTime.MinValue;
-
-            Transaction mostRecentTransaction = walletTransactions
-                .Aggregate((prev, curr) => prev.Input.TimeStamp > curr.Input.TimeStamp ? prev : curr);
-
-            if (mostRecentTransaction != null)
-            {
-                balance = mostRecentTransaction.Outputs.Single(o => o.Address == wallet.PublicKey).Amount;
-                startTime = mostRecentTransaction.Input.TimeStamp;
-            }
-
-
-            transactions.ForEach(t =>
-            {
-                if (t.Input.TimeStamp > startTime)
-                    t.Outputs.ForEach(o =>
-                    {
-                        if (o.Address == wallet.PublicKey)
-                            balance += o.Amount;
-                    });
-            });
+            balance += votes.SelectMany(v => v.Outputs).Where(o => o.CandidateAddress == wallet.PublicKey && o.ElectionAddress == electionAddress).Count();
 
             return balance;
 
-        }
-
-        public static Wallet BlockchainWallet()
-        {
-            return new Wallet
-            {
-                PublicKey = "blockchain-wallet"
-            };
         }
     }
 }

@@ -1,17 +1,20 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 
 
 namespace Voting.Model.Entities
 {
     public class TransactionOutput
     {
-        public int Amount { get; set; }
-        public string Address { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string ElectionAddress { get; set; }
+        public string CandidateAddress { get; set; }
 
-        public TransactionOutput(int amount, string address)
+        public TransactionOutput(string electionAddress, string candidateAddress)
         {
-            Amount = amount;
-            Address = address;
+            Timestamp = DateTime.Now;
+            ElectionAddress = electionAddress;
+            CandidateAddress = candidateAddress;
         }
     }
 }

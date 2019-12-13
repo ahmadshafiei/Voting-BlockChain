@@ -32,8 +32,6 @@ namespace Voting.Infrastructure.Services
         {
             List<Transaction> validTransactions = _transactionPoolService.GetValidTransactions();
 
-            validTransactions.Add(_transactionService.RewardTransaction(wallet, WalletService.BlockchainWallet()));
-
             var block = _blockChainService.AddBlock(validTransactions);
 
             _transactionPoolService.ClearPool();

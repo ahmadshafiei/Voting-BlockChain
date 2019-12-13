@@ -20,6 +20,7 @@ namespace Voting.Infrastructure.Services
 
         public void UpdateOrAddTransaction(Transaction transaction)
         {
+
             bool editMode = Transactions.Any(t => t.Id == transaction.Id);
 
             if (editMode)
@@ -27,7 +28,7 @@ namespace Voting.Infrastructure.Services
             else
                 Transactions.Add(transaction);
         }
-
+        
         public Transaction ExistingTransaction(string publicKey)
         {
             return Transactions.SingleOrDefault(t => t.Input.Address == publicKey);
@@ -37,14 +38,6 @@ namespace Voting.Infrastructure.Services
         {
             return Transactions.Where(t =>
             {
-                int outputTotal = t.Outputs.Select(o => o.Amount).Aggregate(0, (x, y) => x + y);
-
-                if(t.Input.Amount != outputTotal)
-                {
-                    Console.WriteLine($"Invalid transaction from {t.Input.Address}");
-                    return false;
-                }
-
                 if(!_transactionService.VerifyTransaction(t))
                 {
                     Console.WriteLine($"Invalid signature from {t.Input.Address}");

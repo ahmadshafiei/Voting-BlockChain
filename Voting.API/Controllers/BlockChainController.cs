@@ -28,19 +28,25 @@ namespace Voting.API.Controllers
         private readonly TransactionPoolService _transactionPoolService;
         private readonly WalletService _walletService;
         private readonly P2PNetwork _p2pNetwork;
-        private readonly Wallet _wallet;
+        private Wallet _wallet;
         private readonly MinerService _minerService;
 
         public BlockChainController(BlockChainService blockChainService, BlockService blockService, TransactionPoolService transactionPoolService, WalletService walletService, P2PNetwork p2pNetwork
-            ,MinerService minerService)
+            , MinerService minerService)
         {
             _blockService = blockService;
             _blockChainService = blockChainService;
             _transactionPoolService = transactionPoolService;
             _walletService = walletService;
             _p2pNetwork = p2pNetwork;
-            _wallet = new Wallet();
             _minerService = minerService;
+            InitWallet();
+        }
+
+        private void InitWallet()
+        {
+            string key = HttpContext.Request.Headers["WalletKey"];
+            _wallet = new Wallet(key);
         }
 
         [HttpGet]
@@ -49,11 +55,6 @@ namespace Voting.API.Controllers
             return Ok(BlockChain.Chain);
         }
 
-        [HttpPost]
-        public IActionResult MineBlock(List<Voting.Model.Entities.Transaction> transactions)
-        {
-            return Ok(_blockChainService.AddBlock(transactions));
-        }
 
         [HttpGet]
         public IActionResult GetTransactions()
@@ -65,7 +66,7 @@ namespace Voting.API.Controllers
         [HttpPost]
         public IActionResult AddTransaction(TransactionData transaction)
         {
-            Model.Entities.Transaction t = _walletService.CreateTransaction(_wallet, transaction.Recipient, transaction.Amount, _transactionPoolService);
+            Model.Entities.Transaction t = _walletService.CreateTransaction(_wallet, transaction.ElectionAddress, transaction.CandidateAddress, _transactionPoolService);
 
             _p2pNetwork.BroadcastTransaction(t);
 

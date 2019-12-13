@@ -47,7 +47,7 @@ namespace Voting.Infrastructure.Services.BlockChainServices
             {
                 Block block = chain[i];
                 Block previousBlock = chain[i - 1];
-                
+
                 if (!block.PreviousHash.SequenceEqual(previousBlock.Hash) || !block.Hash.SequenceEqual(Hash.HashBlock(block)))
                     return false;
             }
@@ -58,9 +58,16 @@ namespace Voting.Infrastructure.Services.BlockChainServices
         public void ReplaceChain(List<Block> newChain)
         {
             if (newChain.Count < BlockChain.Chain.Count)
-                throw new Exception("Invalid New Chain Length");
+            {
+                Console.WriteLine("Invalid New Chain Length");
+                return;
+            }
+
             else if (!IsValidChain(newChain))
-                throw new Exception("Invalid New Chain");
+            {
+                Console.WriteLine("Invalid New Chain");
+                return;
+            }
 
             BlockChain.Chain = newChain;
         }
