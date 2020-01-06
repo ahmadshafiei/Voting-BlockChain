@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "a0dee636b030e46a2b41ec7a85cbacd62c87163e"
+    "signature": ""
   },
   "compilationOptions": {},
   "targets": {
@@ -220,16 +220,6 @@
           "System.Runtime": "4.3.0",
           "System.Runtime.Extensions": "4.3.0",
           "System.Runtime.InteropServices": "4.3.0"
-        },
-        "runtimeTargets": {
-          "runtime/unix/lib/_._": {
-            "rid": "unix",
-            "assetType": "runtime"
-          },
-          "runtime/win/lib/_._": {
-            "rid": "win",
-            "assetType": "runtime"
-          }
         }
       },
       "System.IO/4.3.0": {
@@ -467,49 +457,49 @@
     "Nethereum.Hex/3.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-x2UBq7ctxpH3T/Q+Dg1GRWnIDCrZzL7VkjJLbNWmvTWDofy0Uvozkr/coCZA4Ip6RhYwSiCthJklt60moCtAOQ==",
+      "sha512": "sha512-Y/KAMwHGgBmslVF+5gtP44Z6176aBImN48gd03jDCti04uI6cz3GbGTTQo2yj9E6tHvfFma5HmqKLNb4BnFKUA==",
       "path": "nethereum.hex/3.4.0",
       "hashPath": "nethereum.hex.3.4.0.nupkg.sha512"
     },
     "Nethereum.Model/3.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Sj/ZNPbZS0kopk0V7qtrh0UUoJZQgzG492Mdc/EzYUOnjmu/bY/P1ZruqBRuTTkIsFwXy8mnx9VyaWveaSRLqw==",
+      "sha512": "sha512-j/kkEu1vUiECnv3dFzkFFgVfWPDMK5PxWeVJs0lG5IgsrhpZiHoIFPCQWdsuOvxJAnt42wjmLv+0UplCujABsw==",
       "path": "nethereum.model/3.4.0",
       "hashPath": "nethereum.model.3.4.0.nupkg.sha512"
     },
     "Nethereum.RLP/3.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-d0VTRbSuGYkyaovpsohluPvSc8jJtRilX56JX1TUa/fsUxKzuZ7Pbf3rtRrh0UECADBLrPkfWry7tJprh47JfA==",
+      "sha512": "sha512-3zoI44+0zGBP4XIVeh4CO2jHnrUYzl83KPfTjGF1TGmCTWjxqepdMsdZ6S3vPhLnmqXL2J3GutNaUfCBifCaTg==",
       "path": "nethereum.rlp/3.4.0",
       "hashPath": "nethereum.rlp.3.4.0.nupkg.sha512"
     },
     "Nethereum.Signer/3.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-RzfzTgQqAX9hKeEjco8dkGD6IWvztn42xBcBsZMY+BORRpz4CRV5CIMK0kwkMlnB4cTSVbvRk3tHzKBCrk+r2g==",
+      "sha512": "sha512-iQJVXJbMC4CIEeSGdPAc8JwVpENfZOWKmVqlWS9qv0IMswOyoVisfie0B7UuQKlI+sVLKiHmUb8biga2WqtsmA==",
       "path": "nethereum.signer/3.4.0",
       "hashPath": "nethereum.signer.3.4.0.nupkg.sha512"
     },
     "Nethereum.Util/3.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-mcDs7GZCXx7vXdggQRd6Me4cAQNdAvGGMbcLoSgUYFxpSKktnGxf7ZZTCR9Ikp3mpMSg9K8jdCP81pNvN5bO2Q==",
+      "sha512": "sha512-XCztMONBHN4De8DmmzHrxrGn7zzrcqqGLmX1jkw/KXIDd0u7L/LKVucP2uwmrxD4a6n8A0qngCu5vikGtMuJUw==",
       "path": "nethereum.util/3.4.0",
       "hashPath": "nethereum.util.3.4.0.nupkg.sha512"
     },
     "Newtonsoft.Json/10.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-MoATFm6YJyk5OdqDdxDWfKe5dkY3Cygu0wrpKPH/LbWtMmSuD/3G/JIInt9sIJN7hKQOFYCIb2UjLc2vO5byQQ==",
+      "sha512": "sha512-hSXaFmh7hNCuEoC4XNY5DrRkLDzYHqPx/Ik23R4J86Z7PE/Y6YidhG602dFVdLBRSdG6xp9NabH3dXpcoxWvww==",
       "path": "newtonsoft.json/10.0.3",
       "hashPath": "newtonsoft.json.10.0.3.nupkg.sha512"
     },
     "Portable.BouncyCastle/1.8.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-oVhFVbTNx02DA83ssNKLI1GGQGb2EJK/OazEqlJGaowtvAZhjxLjhgb9lVuyhzY1n5+PslBffTXHPe97TmNZvg==",
+      "sha512": "sha512-XpJVIhjPiO0o+DU36eeIzqnRilDmE8Z7Kfhm9V9o1yNqM3ikgleD94Z5W/LeEu3t63LaZl2CNJexaix+I6AUMg==",
       "path": "portable.bouncycastle/1.8.2",
       "hashPath": "portable.bouncycastle.1.8.2.nupkg.sha512"
     },
@@ -530,7 +520,7 @@
     "System.Collections.Specialized/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-NoPBj0ykejqAWW4p4gGtrrL+3c84ZLSvGnHgq422ew1Rj4WKj1FA8/BCybqC111EtgcqUl6ZJNFYYS22HLgbjA==",
+      "sha512": "sha512-Epx8PoVZR0iuOnJJDzp7pWvdfMMOAvpUo95pC4ScH2mJuXkKA2Y4aR3cG9qt2klHgSons1WFh4kcGW7cSXvrxg==",
       "path": "system.collections.specialized/4.3.0",
       "hashPath": "system.collections.specialized.4.3.0.nupkg.sha512"
     },
@@ -719,7 +709,7 @@
     "System.Runtime.Serialization.Primitives/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2Z5t70a2SwMsfQDp9KOclaZNyQhfIga2gppq9lIUDM1A4ohTshn4JqT7ir8bvIhXgorWKYDAr6rPzEbi/nTGKg==",
+      "sha512": "sha512-Wz+0KOukJGAlXjtKr+5Xpuxf8+c8739RI1C+A2BoQZT+wMCCoMDDdO8/4IRHfaVINqL78GO8dW8G2lW/e45Mcw==",
       "path": "system.runtime.serialization.primitives/4.3.0",
       "hashPath": "system.runtime.serialization.primitives.4.3.0.nupkg.sha512"
     },

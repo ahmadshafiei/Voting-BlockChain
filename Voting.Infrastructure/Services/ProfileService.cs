@@ -27,7 +27,5 @@ namespace Voting.Infrastructure.Services
 
             return wallet.PublicKey;
         }
-
-        
     }
 }

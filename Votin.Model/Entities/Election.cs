@@ -8,6 +8,7 @@ namespace Votin.Model.Entities
     {
         public string Name { get; set; }
         public string Address { get; set; }
+        public DateTime InsertDate { get; set; } = DateTime.Now;
         public List<string> Candidates { get; set; } = new List<string>();
     }
 }

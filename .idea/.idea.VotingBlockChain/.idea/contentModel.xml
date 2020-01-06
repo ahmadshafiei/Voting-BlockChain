@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/.Rider2019.3/system/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2019.3/system/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_VotingBlockChain.2037569918.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="Votin.Model" t="IncludeRecursive">
+        <e p="API" t="Include">
+          <e p="BlockChain" t="Include">
+            <e p="BlockData.cs" t="Include" />
+            <e p="TransactionData.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Config.cs" t="Include" />
+        <e p="Context" t="Include">
+          <e p="BlockchainContext.cs" t="Include" />
+        </e>
+        <e p="Entities" t="Include">
+          <e p="Block.cs" t="Include" />
+          <e p="Election.cs" t="Include" />
+          <e p="Transaction.cs" t="Include" />
+          <e p="TransactionInput.cs" t="Include" />
+          <e p="TransactionOutput.cs" t="Include" />
+          <e p="Wallet.cs" t="Include" />
+        </e>
+        <e p="Exceptions" t="Include">
+          <e p="BlockChainException.cs" t="Include" />
+          <e p="InvalidTransaction.cs" t="Include" />
+          <e p="NotFoundException.cs" t="Include" />
+        </e>
+        <e p="Votin.Model.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="Votin.Model.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="Voting.API" t="IncludeRecursive">
+        <e p="Controllers" t="Include">
+          <e p="BlockChainController.cs" t="Include" />
+          <e p="ElectionController.cs" t="Include" />
+          <e p="ProfileController.cs" t="Include" />
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="Voting.API.csproj" t="IncludeRecursive" />
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.2" t="Include">
+              <e p="Voting.API.AssemblyInfo.cs" t="Include" />
+              <e p="Voting.API.RazorAssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="Voting.Infrastructure" t="IncludeRecursive">
+        <e p="BlockChain.cs" t="Include" />
+        <e p="DTO" t="Include">
+          <e p="Election" t="Include">
+            <e p="ElectionDTO.cs" t="Include" />
+          </e>
+          <e p="Profile" t="Include">
+            <e p="WalletDTO.cs" t="Include" />
+          </e>
+        </e>
+        <e p="MiddleWares" t="Include">
+          <e p="ExceptionHandlerMiddleWare.cs" t="Include" />
+        </e>
+        <e p="Model" t="Include">
+          <e p="Common" t="Include">
+            <e p="PagedResult.cs" t="Include" />
+            <e p="Pagination.cs" t="Include" />
+          </e>
+          <e p="Election" t="Include">
+            <e p="ElectionSearch.cs" t="Include" />
+          </e>
+        </e>
+        <e p="PeerToPeer" t="Include">
+          <e p="P2PNetwork.cs" t="Include" />
+        </e>
+        <e p="Services" t="Include">
+          <e p="BlockChainServices" t="Include">
+            <e p="BlockChainService.cs" t="Include" />
+          </e>
+          <e p="BlockServices" t="Include">
+            <e p="BlockService.cs" t="Include" />
+          </e>
+          <e p="ElectionService.cs" t="Include" />
+          <e p="MinerService.cs" t="Include" />
+          <e p="ProfileService.cs" t="Include" />
+          <e p="TransactionPoolService.cs" t="Include" />
+          <e p="TransactionService.cs" t="Include" />
+          <e p="WalletService.cs" t="Include" />
+        </e>
+        <e p="Utility" t="Include">
+          <e p="ECCUtility.cs" t="Include" />
+          <e p="Hash.cs" t="Include" />
+          <e p="NumberUtil.cs" t="Include" />
+        </e>
+        <e p="Voting.Infrastructure.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="Voting.Infrastructure.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="VotingBlockChain.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

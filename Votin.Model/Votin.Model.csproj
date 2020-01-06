@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Nethereum.Hex" Version="3.4.0" />
     <PackageReference Include="Nethereum.Signer" Version="3.4.0" />
     <PackageReference Include="Nethereum.Util" Version="3.4.0" />
