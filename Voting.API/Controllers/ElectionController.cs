@@ -3,44 +3,64 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Votin.Model.Entities;
+using Voting.Infrastructure.DTO.Election;
+using Voting.Infrastructure.Model.Common;
+using Voting.Infrastructure.Model.Election;
+using Voting.Infrastructure.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Voting.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class ElectionController : Controller
     {
-        // GET: api/<controller>
+        private readonly ElectionService _electionService;
+
+        public ElectionController(ElectionService electionService)
+        {
+            _electionService = electionService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult GetElections([FromQuery] ElectionSearch model)
         {
-            return new string[] { "value1", "value2" };
+            PagedResult<ElectionDTO> elections = _electionService.GetElections(model);
+
+            return Ok(elections);
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        public IActionResult GetElection(string address)
         {
-            return "value";
+            Election election = _electionService.GetElection(address);
+
+            return Ok(election);
         }
 
-        // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult CreateElection([FromBody] Election election)
         {
+            _electionService.CreateElection(election);
+
+            return Ok();
         }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPatch]
+        public IActionResult UpdateElection(Election election)
         {
+            _electionService.UpdateElection(election);
+
+            return Ok();
         }
 
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public IActionResult RemoveElection(string address)
         {
+            _electionService.RemoveElection(address);
+
+            return Ok();
         }
     }
 }

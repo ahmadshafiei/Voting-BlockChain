@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Voting.Infrastructure.Services;
 using Voting.Model.Entities;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Voting.API.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -17,11 +15,12 @@ namespace Voting.API.Controllers
         private readonly WalletService _walletService;
 
         public ProfileController(
-                ProfileService profileService,
-                WalletService walletService
-            )
+            ProfileService profileService,
+            WalletService walletService
+        )
         {
             _walletService = walletService;
+            _profileService = profileService;
         }
 
         [HttpGet]
@@ -35,6 +34,5 @@ namespace Voting.API.Controllers
         {
             return Ok(_profileService.GetPublicKey(privateKey));
         }
-
     }
 }

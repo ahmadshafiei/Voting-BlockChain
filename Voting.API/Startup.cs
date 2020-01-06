@@ -31,6 +31,17 @@ namespace Voting.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+             services.AddDbContext<>()
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("BlockChain Policy", builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+                });
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSingleton<BlockService>();
@@ -39,6 +50,8 @@ namespace Voting.API
             services.AddSingleton<TransactionService>();
             services.AddSingleton<WalletService>();
             services.AddSingleton<MinerService>();
+            services.AddSingleton<ProfileService>();
+            services.AddSingleton<ElectionService>();
 
             services.AddSingleton<BlockChain>();
             services.AddSingleton<P2PNetwork>();
@@ -55,13 +68,11 @@ namespace Voting.API
             //{
             //    app.UseDeveloperExceptionPage();
             //}
+            app.UseCors("BlockChain Policy");
 
             app.UseExceptionHandlerMiddleware();
 
-
             app.UseMvc();
-
         }
-
     }
 }

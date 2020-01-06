@@ -1,0 +1,227 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.API/Voting.API.csproj": {}
+  },
+  "projects": {
+    "/home/ahmad/Desktop/VotingBlockchain/Api/Votin.Model/Votin.Model.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ahmad/Desktop/VotingBlockchain/Api/Votin.Model/Votin.Model.csproj",
+        "projectName": "Votin.Model",
+        "projectPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Votin.Model/Votin.Model.csproj",
+        "packagesPath": "/home/ahmad/.nuget/packages/",
+        "outputPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Votin.Model/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/home/ahmad/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "Nethereum.Hex": {
+              "target": "Package",
+              "version": "[3.4.0, )"
+            },
+            "Nethereum.Signer": {
+              "target": "Package",
+              "version": "[3.4.0, )"
+            },
+            "Nethereum.Util": {
+              "target": "Package",
+              "version": "[3.4.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.API/Voting.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.API/Voting.API.csproj",
+        "projectName": "Voting.API",
+        "projectPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.API/Voting.API.csproj",
+        "packagesPath": "/home/ahmad/.nuget/packages/",
+        "outputPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.API/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/home/ahmad/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {
+              "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/Voting.Infrastructure.csproj": {
+                "projectPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/Voting.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.AspNetCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "Microsoft.AspNetCore.Razor.Design": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/Voting.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/Voting.Infrastructure.csproj",
+        "projectName": "Voting.Infrastructure",
+        "projectPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/Voting.Infrastructure.csproj",
+        "packagesPath": "/home/ahmad/.nuget/packages/",
+        "outputPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/home/ahmad/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {
+              "/home/ahmad/Desktop/VotingBlockchain/Api/Votin.Model/Votin.Model.csproj": {
+                "projectPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Votin.Model/Votin.Model.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "Microsoft.AspNetCore.WebSockets": {
+              "target": "Package",
+              "version": "[2.2.1, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
