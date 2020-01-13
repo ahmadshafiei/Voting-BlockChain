@@ -21,6 +21,7 @@ namespace Voting.API
             WebHost
             .CreateDefaultBuilder(args)
             .UseUrls(args)
-                .UseStartup<Startup>();
+            .UseKestrel()
+            .UseStartup<Startup>();
     }
 }

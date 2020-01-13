@@ -24,7 +24,7 @@ namespace Voting.Infrastructure.PeerToPeer
         private ManualResetEvent messageManualReset = new ManualResetEvent(false);
         private readonly IPAddress localhost = IPAddress.Parse("127.0.0.1");
 
-        private BlockChainService _blockChainServie;
+        private BlockChainService _blockChainService;
         private TransactionPoolService _transactionPoolService;
 
         /// <summary>
@@ -44,14 +44,14 @@ namespace Voting.Infrastructure.PeerToPeer
         /// </summary>
         private List<Socket> _sockets = new List<Socket>();
 
-        public P2PNetwork(IConfiguration configuration, BlockChainService blockChainService, IServiceProvider serviceProvider)
+        private readonly IServiceProvider _serviceProvider;
+
+        public P2PNetwork(IConfiguration configuration, IServiceProvider serviceProvider)
         {
-            _blockChainServie = blockChainService;
+            _serviceProvider = serviceProvider;
             _p2pPort = Environment.GetEnvironmentVariable("P2P_PORT") != null ?
                 Convert.ToInt32(Environment.GetEnvironmentVariable("P2P_PORT")) :
                 Convert.ToInt32(configuration.GetSection("P2P").GetSection("DEFAULT_PORT").Value);
-
-            _transactionPoolService = serviceProvider.GetService<TransactionPoolService>();
 
             Console.WriteLine($"Current P2P_Port : {_p2pPort}");
             Console.WriteLine($"Initial Peers : {JsonConvert.SerializeObject(_peers)}");
@@ -212,6 +212,7 @@ namespace Voting.Infrastructure.PeerToPeer
                         handler = HandleTransactionData;
                     else if ((MessageType)messageType.First() == MessageType.ClearTransaction)
                     {
+                        _transactionPoolService = _serviceProvider.GetService<TransactionPoolService>();
                         _transactionPoolService.ClearPool();
                         messageManualReset.Set();
                         continue;
@@ -249,7 +250,8 @@ namespace Voting.Infrastructure.PeerToPeer
             {
                 List<Block> incomingChain = state.BLockchain;
 
-                _blockChainServie.ReplaceChain(incomingChain);
+                _blockChainService = _serviceProvider.GetService<BlockChainService>();
+                _blockChainService.ReplaceChain(incomingChain);
 
                 Console.WriteLine("Received Blockchain : ");
                 Console.WriteLine(Encoding.UTF8.GetString(state.buffer));
@@ -270,6 +272,7 @@ namespace Voting.Infrastructure.PeerToPeer
             {
                 Transaction transaction = state.Transaction;
 
+                _transactionPoolService = _serviceProvider.GetService<TransactionPoolService>();
                 _transactionPoolService.UpdateOrAddTransaction(transaction);
 
                 Console.WriteLine("Received Transaction : ");

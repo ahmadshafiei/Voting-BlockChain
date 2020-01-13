@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Text;
 
-namespace Votin.Model.Entities
+namespace Voting.Model.Entities
 {
     public class Election
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public DateTime InsertDate { get; set; } = DateTime.Now;
-        public List<string> Candidates { get; set; } = new List<string>();
+        public List<ElectionCandidate> Candidates { get; set; } = new List<ElectionCandidate>();
     }
 }

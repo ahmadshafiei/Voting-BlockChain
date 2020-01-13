@@ -7,8 +7,11 @@ namespace Voting.Model.Exceptions
     {
         public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.InternalServerError;
         public string ContentType { get; set; } = "application/json";
-
-        public BlockChainException(string message) : base(message) { }
+        
+        public bool ShowError { get; set; } = true;
+        public BlockChainException(string message) : base(message)
+        {
+        }
 
         public BlockChainException(HttpStatusCode statusCode)
         {
@@ -20,6 +23,8 @@ namespace Voting.Model.Exceptions
             this.StatusCode = statusCode;
         }
 
-        public BlockChainException(HttpStatusCode statusCode, Exception inner) : this(statusCode, inner.ToString()) { }
+        public BlockChainException(HttpStatusCode statusCode, Exception inner) : this(statusCode, inner.ToString())
+        {
+        }
     }
 }

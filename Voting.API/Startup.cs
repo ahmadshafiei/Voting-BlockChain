@@ -5,16 +5,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Voting.Model.Context;
 using Voting.Infrastructure;
 using Voting.Infrastructure.MiddleWares;
 using Voting.Infrastructure.PeerToPeer;
 using Voting.Infrastructure.Services;
 using Voting.Infrastructure.Services.BlockChainServices;
 using Voting.Infrastructure.Services.BlockServices;
+using Voting.Model.Entities;
 
 namespace Voting.API
 {
@@ -31,7 +35,15 @@ namespace Voting.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-             services.AddDbContext<>()
+            string p2p_port = Environment.GetEnvironmentVariable("P2P_PORT") != null
+                ? Environment.GetEnvironmentVariable("P2P_PORT")
+                : _configuration.GetSection("P2P").GetSection("DEFAULT_PORT").Value;
+
+            string connection = string.Format(_configuration.GetConnectionString("BlockchainContext"), p2p_port);
+
+            services.AddDbContext<BlockchainContext>(opt =>
+                opt.UseSqlServer(connection));
+
             services.AddCors(opt =>
             {
                 opt.AddPolicy("BlockChain Policy", builder =>
@@ -44,14 +56,14 @@ namespace Voting.API
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddSingleton<BlockService>();
-            services.AddSingleton<BlockChainService>();
-            services.AddSingleton<TransactionPoolService>();
-            services.AddSingleton<TransactionService>();
-            services.AddSingleton<WalletService>();
-            services.AddSingleton<MinerService>();
-            services.AddSingleton<ProfileService>();
-            services.AddSingleton<ElectionService>();
+            services.AddScoped<BlockService>();
+            services.AddScoped<BlockChainService>();
+            services.AddScoped<TransactionPoolService>();
+            services.AddScoped<TransactionService>();
+            services.AddScoped<WalletService>();
+            services.AddScoped<MinerService>();
+            services.AddScoped<ProfileService>();
+            services.AddScoped<ElectionService>();
 
             services.AddSingleton<BlockChain>();
             services.AddSingleton<P2PNetwork>();
@@ -64,10 +76,6 @@ namespace Voting.API
         {
             app.ApplicationServices.GetService<P2PNetwork>().InitialNetwrok();
 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
             app.UseCors("BlockChain Policy");
 
             app.UseExceptionHandlerMiddleware();

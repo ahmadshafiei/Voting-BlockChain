@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.API/Voting.API.csproj",
+    "projectUniqueName": "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.API/Voting.API.csproj",
     "projectName": "Voting.API",
-    "projectPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.API/Voting.API.csproj",
-    "outputPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.API/obj/",
+    "projectPath": "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.API/Voting.API.csproj",
+    "outputPath": "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.API/obj/",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
       "/usr/share/dotnet/sdk/NuGetFallbackFolder"
@@ -18,8 +18,8 @@
     "frameworks": {
       "netcoreapp2.2": {
         "projectReferences": {
-          "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/Voting.Infrastructure.csproj": {
-            "projectPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/Voting.Infrastructure.csproj"
+          "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/Voting.Infrastructure.csproj": {
+            "projectPath": "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/Voting.Infrastructure.csproj"
           }
         }
       }
@@ -48,6 +48,10 @@
           "target": "Package",
           "version": "[2.2.0, )"
         },
+        "Microsoft.Extensions.DependencyInjection": {
+          "target": "Package",
+          "version": "[2.2.0, )"
+        },
         "Microsoft.NETCore.App": {
           "suppressParent": "All",
           "target": "Package",
@@ -56,16 +60,10 @@
         }
       },
       "imports": [
-        "net461",
-        "net462",
-        "net47",
-        "net471",
-        "net472",
-        "net48"
+        "net461"
       ],
       "assetTargetFallback": true,
-      "warn": true,
-      "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+      "warn": true
     }
   }
 }

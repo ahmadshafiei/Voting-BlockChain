@@ -23,3 +23,15 @@ C:/Users/Ahmad/Desktop/VotingBlockChain/Voting.Infrastructure/obj/Debug/netcorea
 /home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/obj/Debug/netcoreapp2.1/Voting.Infrastructure.csproj.CopyComplete
 /home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/obj/Debug/netcoreapp2.1/Voting.Infrastructure.dll
 /home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/obj/Debug/netcoreapp2.1/Voting.Infrastructure.pdb
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/bin/Debug/netcoreapp2.1/Voting.Infrastructure.deps.json
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/bin/Debug/netcoreapp2.1/Voting.Infrastructure.dll
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/bin/Debug/netcoreapp2.1/Voting.Infrastructure.pdb
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/obj/Debug/netcoreapp2.1/Voting.Infrastructure.csprojAssemblyReference.cache
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/obj/Debug/netcoreapp2.1/Voting.Infrastructure.csproj.CoreCompileInputs.cache
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/obj/Debug/netcoreapp2.1/Voting.Infrastructure.AssemblyInfoInputs.cache
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/obj/Debug/netcoreapp2.1/Voting.Infrastructure.AssemblyInfo.cs
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/obj/Debug/netcoreapp2.1/Voting.Infrastructure.csproj.CopyComplete
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/obj/Debug/netcoreapp2.1/Voting.Infrastructure.dll
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/obj/Debug/netcoreapp2.1/Voting.Infrastructure.pdb
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/bin/Debug/netcoreapp2.1/Voting.Model.dll
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/bin/Debug/netcoreapp2.1/Voting.Model.pdb

@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/Voting.Infrastructure.csproj",
+    "projectUniqueName": "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/Voting.Infrastructure.csproj",
     "projectName": "Voting.Infrastructure",
-    "projectPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/Voting.Infrastructure.csproj",
-    "outputPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Voting.Infrastructure/obj/",
+    "projectPath": "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/Voting.Infrastructure.csproj",
+    "outputPath": "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Voting.Infrastructure/obj/",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
       "/usr/share/dotnet/sdk/NuGetFallbackFolder"
@@ -18,8 +18,8 @@
     "frameworks": {
       "netcoreapp2.1": {
         "projectReferences": {
-          "/home/ahmad/Desktop/VotingBlockchain/Api/Votin.Model/Votin.Model.csproj": {
-            "projectPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Votin.Model/Votin.Model.csproj"
+          "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/Votin.Model.csproj": {
+            "projectPath": "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/Votin.Model.csproj"
           }
         }
       }
@@ -53,16 +53,10 @@
         }
       },
       "imports": [
-        "net461",
-        "net462",
-        "net47",
-        "net471",
-        "net472",
-        "net48"
+        "net461"
       ],
       "assetTargetFallback": true,
-      "warn": true,
-      "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+      "warn": true
     }
   }
 }

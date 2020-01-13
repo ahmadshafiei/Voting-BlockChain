@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/home/ahmad/Desktop/VotingBlockchain/Api/Votin.Model/Votin.Model.csproj",
-    "projectName": "Votin.Model",
-    "projectPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Votin.Model/Votin.Model.csproj",
-    "outputPath": "/home/ahmad/Desktop/VotingBlockchain/Api/Votin.Model/obj/",
+    "projectUniqueName": "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/Votin.Model.csproj",
+    "projectName": "Voting.Model",
+    "projectPath": "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/Votin.Model.csproj",
+    "outputPath": "/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/obj/",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
       "/usr/share/dotnet/sdk/NuGetFallbackFolder"
@@ -33,6 +33,34 @@
           "target": "Package",
           "version": "[2.2.0, )"
         },
+        "Microsoft.EntityFrameworkCore.Design": {
+          "target": "Package",
+          "version": "[2.2.0, )"
+        },
+        "Microsoft.EntityFrameworkCore.SqlServer": {
+          "target": "Package",
+          "version": "[2.2.0, )"
+        },
+        "Microsoft.EntityFrameworkCore.SqlServer.Design": {
+          "target": "Package",
+          "version": "[2.0.0-preview1-final, )"
+        },
+        "Microsoft.EntityFrameworkCore.Tools": {
+          "target": "Package",
+          "version": "[2.2.0, )"
+        },
+        "Microsoft.EntityFrameworkCore.Tools.DotNet": {
+          "target": "Package",
+          "version": "[2.0.3, )"
+        },
+        "Microsoft.Extensions.Configuration.FileExtensions": {
+          "target": "Package",
+          "version": "[2.2.0, )"
+        },
+        "Microsoft.Extensions.Configuration.Json": {
+          "target": "Package",
+          "version": "[2.2.0, )"
+        },
         "Microsoft.NETCore.App": {
           "suppressParent": "All",
           "target": "Package",
@@ -53,16 +81,10 @@
         }
       },
       "imports": [
-        "net461",
-        "net462",
-        "net47",
-        "net471",
-        "net472",
-        "net48"
+        "net461"
       ],
       "assetTargetFallback": true,
-      "warn": true,
-      "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+      "warn": true
     }
   }
 }

@@ -1,2 +1,5 @@
 # Default ignored files
 /.idea.VotingBlockChain/.idea/workspace.xml
+# Datasource local storage ignored files
+/.idea.VotingBlockChain/.idea/dataSources/
+/.idea.VotingBlockChain/.idea/dataSources.local.xml

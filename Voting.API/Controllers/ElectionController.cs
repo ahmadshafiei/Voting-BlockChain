@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Votin.Model.Entities;
+using Voting.Model.Entities;
 using Voting.Infrastructure.DTO.Election;
 using Voting.Infrastructure.Model.Common;
 using Voting.Infrastructure.Model.Election;
 using Voting.Infrastructure.Services;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Voting.API.Controllers
 {
@@ -24,41 +22,41 @@ namespace Voting.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetElections([FromQuery] ElectionSearch model)
+        public async Task<IActionResult> GetElections([FromQuery] ElectionSearch model)
         {
-            PagedResult<ElectionDTO> elections = _electionService.GetElections(model);
+            PagedResult<ElectionDTO> elections = await _electionService.GetElectionsAsync(model);
 
             return Ok(elections);
         }
 
         [HttpGet]
-        public IActionResult GetElection(string address)
+        public async Task<IActionResult> GetElection(int electionId)
         {
-            Election election = _electionService.GetElection(address);
+            Election election = await _electionService.GetElectionAsync(electionId);
 
             return Ok(election);
         }
 
         [HttpPost]
-        public IActionResult CreateElection([FromBody] Election election)
+        public async Task<IActionResult> CreateElection([FromBody] Election election)
         {
-            _electionService.CreateElection(election);
+            await _electionService.CreateElectionAsync(election);
 
             return Ok();
         }
 
         [HttpPatch]
-        public IActionResult UpdateElection(Election election)
+        public async Task<IActionResult> UpdateElection(Election election)
         {
-            _electionService.UpdateElection(election);
+            await _electionService.UpdateElectionAsync(election);
 
             return Ok();
         }
 
         [HttpDelete]
-        public IActionResult RemoveElection(string address)
+        public async Task<IActionResult> RemoveElection(int electionId)
         {
-            _electionService.RemoveElection(address);
+            await _electionService.RemoveElectionAsync(electionId);
 
             return Ok();
         }
