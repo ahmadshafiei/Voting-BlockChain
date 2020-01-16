@@ -39,6 +39,10 @@
       "frameworks": {
         "netcoreapp2.1": {
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[2.2.0, )"
@@ -137,6 +141,14 @@
       "frameworks": {
         "netcoreapp2.1": {
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
             "Microsoft.AspNetCore.WebSockets": {
               "target": "Package",
               "version": "[2.2.1, )"

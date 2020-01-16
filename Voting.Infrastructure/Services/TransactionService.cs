@@ -3,28 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Voting.Model;
 using Voting.Model.Entities;
 using Voting.Model.Exceptions;
 using Voting.Infrastructure.Utility;
+using Voting.Model.Context;
 
 namespace Voting.Infrastructure.Services
 {
     public class TransactionService
     {
+        private readonly BlockchainContext _dbContext;
+
+        public TransactionService(BlockchainContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         /// <summary>
         /// TODO: amount should change to vote (actually there should be no amount , vote is defaults to 1)
         /// Implementation change so senders balance don't decrease on sending 
         /// </summary>
         /// <param name="sender">Voter</param>
         /// <param name="candidateAddress">Candidate</param>
-        /// <param name="amount">Vote count (actually it should be 1)</param>
         public Transaction NewTransaction(Wallet sender, string electionAddress, string candidateAddress)
         {
             return TransactionWithOutputs(sender, candidateAddress, new List<TransactionOutput>
-                {
-                    new TransactionOutput(electionAddress , candidateAddress)
-                }.ToArray());
+            {
+                new TransactionOutput(electionAddress, candidateAddress)
+            }.ToArray());
         }
 
         private Transaction TransactionWithOutputs(Wallet sender, string recipient, params TransactionOutput[] outputs)
@@ -39,7 +48,8 @@ namespace Voting.Infrastructure.Services
             return transaction;
         }
 
-        public Transaction UpdateTransaction(Transaction transaction, Wallet sender, string electionAddress, string candidateAddress)
+        public Transaction UpdateTransaction(Transaction transaction, Wallet sender, string electionAddress,
+            string candidateAddress)
         {
             if (transaction.Outputs.Any(o => o.ElectionAddress == electionAddress))
             {
@@ -47,20 +57,25 @@ namespace Voting.Infrastructure.Services
                 return transaction;
             }
 
-            transaction.Outputs.Add(new TransactionOutput(electionAddress, candidateAddress));
+            TransactionOutput output = new TransactionOutput(electionAddress, candidateAddress);
 
-            SignTransaction(transaction, sender);
+            transaction.Outputs.Add(output);
+
+            SignTransaction(transaction, sender, true);
 
             return transaction;
         }
 
-        public void SignTransaction(Transaction transaction, Wallet sender)
+        public void SignTransaction(Transaction transaction, Wallet sender, bool isUpdating = false)
         {
-            transaction.Input = new TransactionInput
-            {
-                Address = sender.PublicKey,
-                Signature = sender.Sign(Hash.HashTransactionOutput(transaction.Outputs.ToArray()))
-            };
+            if (isUpdating)
+                transaction.Input = new TransactionInput
+                {
+                    Address = sender.PublicKey,
+                    Signature = sender.Sign(Hash.HashTransactionOutput(transaction.Outputs.ToArray()))
+                };
+            else
+                transaction.Input.Signature = sender.Sign(Hash.HashTransactionOutput(transaction.Outputs.ToArray()));
         }
 
         public bool VerifyTransaction(Transaction transaction)

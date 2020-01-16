@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Voting.API.Controllers.Util;
+using Voting.Infrastructure.API.Election;
 using Voting.Model.Entities;
 using Voting.Infrastructure.DTO.Election;
 using Voting.Infrastructure.Model.Common;
@@ -12,11 +15,12 @@ using Voting.Infrastructure.Services;
 namespace Voting.API.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public class ElectionController : Controller
+    public class ElectionController : BaseController
     {
         private readonly ElectionService _electionService;
 
-        public ElectionController(ElectionService electionService)
+        public ElectionController(ElectionService electionService, IHttpContextAccessor contextAccessor) : base(
+            contextAccessor)
         {
             _electionService = electionService;
         }
@@ -32,21 +36,31 @@ namespace Voting.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetElection(int electionId)
         {
-            Election election = await _electionService.GetElectionAsync(electionId);
+            ElectionDTO election = await _electionService.GetElectionAsync(electionId);
 
             return Ok(election);
         }
 
+        /// <summary>
+        /// Elections which current user has not voted yet !!
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetUnvotedElections()
+        {
+            List<ElectionDTO> elections = await _electionService.GetUnvotedElections(PublicKey);
+            return Ok(elections);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> CreateElection([FromBody] Election election)
+        public async Task<IActionResult> CreateElection([FromBody] CreateElection election)
         {
             await _electionService.CreateElectionAsync(election);
-
             return Ok();
         }
 
         [HttpPatch]
-        public async Task<IActionResult> UpdateElection(Election election)
+        public async Task<IActionResult> UpdateElection([FromBody] UpdateElection election)
         {
             await _electionService.UpdateElectionAsync(election);
 

@@ -30,6 +30,8 @@
           <e p="BlockChainException.cs" t="Include" />
           <e p="InvalidTransaction.cs" t="Include" />
           <e p="NotFoundException.cs" t="Include" />
+          <e p="UnauthorizedException.cs" t="Include" />
+          <e p="ValidationException.cs" t="Include" />
         </e>
         <e p="Migrations" t="Include">
           <e p="20200111204014_Initial.Designer.cs" t="Include" />
@@ -51,6 +53,10 @@
           <e p="BlockChainController.cs" t="Include" />
           <e p="ElectionController.cs" t="Include" />
           <e p="ProfileController.cs" t="Include" />
+          <e p="Util" t="Include">
+            <e p="BaseController.cs" t="Include" />
+          </e>
+          <e p="VotingController.cs" t="Include" />
         </e>
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">
@@ -61,11 +67,6 @@
         <e p="appsettings.Development.json" t="Include" />
         <e p="appsettings.json" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
-        <e p="mono_crash.mem.12996.1.blob" t="Include" />
-        <e p="mono_crash.mem.13466.1.blob" t="Include" />
-        <e p="mono_crash.mem.13652.1.blob" t="Include" />
-        <e p="mono_crash.mem.24065.1.blob" t="Include" />
-        <e p="mono_crash.mem.9209.1.blob" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp2.2" t="Include">
@@ -76,6 +77,18 @@
         </e>
       </e>
       <e p="Voting.Infrastructure" t="IncludeRecursive">
+        <e p="API" t="Include">
+          <e p="Election" t="Include">
+            <e p="CreateElection.cs" t="Include" />
+            <e p="UpdateElection.cs" t="Include" />
+          </e>
+          <e p="Vote" t="Include">
+            <e p="Vote.cs" t="Include" />
+          </e>
+        </e>
+        <e p="AutoMapper" t="Include">
+          <e p="ElectionProfile.cs" t="Include" />
+        </e>
         <e p="BlockChain.cs" t="Include" />
         <e p="DTO" t="Include">
           <e p="Election" t="Include">
@@ -112,6 +125,7 @@
           <e p="ProfileService.cs" t="Include" />
           <e p="TransactionPoolService.cs" t="Include" />
           <e p="TransactionService.cs" t="Include" />
+          <e p="VotingService.cs" t="Include" />
           <e p="WalletService.cs" t="Include" />
         </e>
         <e p="Utility" t="Include">

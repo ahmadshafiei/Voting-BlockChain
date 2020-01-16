@@ -4,6 +4,7 @@ using System.Linq;
 using Voting.Model;
 using Voting.Model.Entities;
 using Voting.Infrastructure.Utility;
+using Voting.Model.Context;
 
 namespace Voting.Infrastructure
 {

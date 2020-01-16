@@ -7,7 +7,7 @@ namespace Voting.Model.Entities
 {
     public class Transaction
     {
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public TransactionInput Input { get; set; }
         public List<TransactionOutput> Outputs { get; set; }
     }

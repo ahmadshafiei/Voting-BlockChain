@@ -8,6 +8,7 @@ namespace Voting.Model.Entities
 {
     public class Block
     {
+        public int Id  { get; set; }
         public long Timestamp { get; set; }
         public byte[] Hash { get; set; }
         public byte[] PreviousHash { get; set; }

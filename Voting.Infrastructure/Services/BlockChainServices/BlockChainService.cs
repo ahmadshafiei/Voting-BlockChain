@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Voting.Model.Entities;
 using Voting.Infrastructure;
 using Voting.Infrastructure.Utility;
 using Voting.Infrastructure.Services.BlockServices;
 using Voting.Infrastructure.PeerToPeer;
 using Microsoft.Extensions.DependencyInjection;
+using Voting.Model.Context;
 
 namespace Voting.Infrastructure.Services.BlockChainServices
 {
@@ -16,11 +18,14 @@ namespace Voting.Infrastructure.Services.BlockChainServices
         private readonly BlockService _blockService;
         private P2PNetwork _p2PNetwork;
         private readonly IServiceProvider _serviceProvider;
+        private readonly BlockchainContext _dbContext;
 
-        public BlockChainService(BlockService blockService, IServiceProvider serviceProvider)
+        public BlockChainService(BlockService blockService, IServiceProvider serviceProvider,
+            BlockchainContext dbContext)
         {
             _blockService = blockService;
             _serviceProvider = serviceProvider;
+            _dbContext = dbContext;
         }
 
         public Block AddBlock(List<Transaction> data)
@@ -28,6 +33,9 @@ namespace Voting.Infrastructure.Services.BlockChainServices
             Block lastBlock = BlockChain.Chain.Last();
 
             Block block = _blockService.MineBlock(lastBlock, data);
+
+            _dbContext.Blocks.Add(block);
+            _dbContext.SaveChangesAsync();
 
             BlockChain.Chain.Add(block);
 
@@ -48,7 +56,8 @@ namespace Voting.Infrastructure.Services.BlockChainServices
                 Block block = chain[i];
                 Block previousBlock = chain[i - 1];
 
-                if (!block.PreviousHash.SequenceEqual(previousBlock.Hash) || !block.Hash.SequenceEqual(Hash.HashBlock(block)))
+                if (!block.PreviousHash.SequenceEqual(previousBlock.Hash) ||
+                    !block.Hash.SequenceEqual(Hash.HashBlock(block)))
                     return false;
             }
 
@@ -70,6 +79,9 @@ namespace Voting.Infrastructure.Services.BlockChainServices
             }
 
             BlockChain.Chain = newChain;
+            _dbContext.Blocks.RemoveRange();
+            _dbContext.Blocks.AddRange(newChain);
+            _dbContext.SaveChanges();
         }
     }
 }

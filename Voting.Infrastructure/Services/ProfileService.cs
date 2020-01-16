@@ -21,11 +21,16 @@ namespace Voting.Infrastructure.Services
             return result;
         }
 
-        public string GetPublicKey(string privateKey)
+        public WalletDTO GetPublicKey(string privateKey)
         {
             Wallet wallet = new Wallet(privateKey);
 
-            return wallet.PublicKey;
+            WalletDTO result = new WalletDTO
+            {
+                PublicKey = wallet.PublicKey
+            };
+
+            return result;
         }
     }
 }

@@ -9,8 +9,12 @@ namespace Voting.Model.Context
 {
     public class BlockchainContext : DbContext
     {
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<TransactionInput> TransactionInputs { get; set; }
+        public DbSet<TransactionOutput> TransactionOutputs { get; set; }
         public DbSet<Election> Elections { get; set; }
         public DbSet<ElectionCandidate> ElectionCandidates { get; set; }
+        public DbSet<Block> Blocks { get; set; }
 
         public BlockchainContext(DbContextOptions opt) : base(opt)
         {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using Voting.Model.Context;
 using Voting.Model.Entities;
 
 namespace Voting.Infrastructure.Services
@@ -10,22 +12,27 @@ namespace Voting.Infrastructure.Services
     public class WalletService
     {
         private readonly TransactionService _transactionService;
+        private readonly BlockchainContext _dbContext;
 
-        public WalletService(TransactionService transactionService)
+        public WalletService(TransactionService transactionService,BlockchainContext dbContext)
         {
             _transactionService = transactionService;
+            _dbContext = dbContext;
         }
 
-        public Transaction CreateTransaction(Wallet wallet, string electionAddress, string candidateAddress, TransactionPoolService transactionPool)
+        public async Task<Transaction> CreateTransaction(Wallet wallet, string electionAddress, string candidateAddress,
+            TransactionPoolService transactionPool)
         {
-            Transaction transaction = transactionPool.ExistingTransaction(wallet.PublicKey);
+            Transaction transaction = await transactionPool.ExistingTransaction(wallet.PublicKey);
 
             if (transaction == null)
+            {
                 transaction = _transactionService.NewTransaction(wallet, electionAddress, candidateAddress);
+            }
             else
                 _transactionService.UpdateTransaction(transaction, wallet, electionAddress, candidateAddress);
 
-            transactionPool.UpdateOrAddTransaction(transaction);
+            await transactionPool.UpdateOrAddTransaction(transaction);
 
             return transaction;
         }
@@ -39,10 +46,10 @@ namespace Voting.Infrastructure.Services
 
             List<Transaction> votes = BlockChain.Chain.SelectMany(c => c.Data).ToList();
 
-            balance += votes.SelectMany(v => v.Outputs).Where(o => o.CandidateAddress == wallet.PublicKey && o.ElectionAddress == electionAddress).Count();
+            balance += votes.SelectMany(v => v.Outputs)
+                .Where(o => o.CandidateAddress == wallet.PublicKey && o.ElectionAddress == electionAddress).Count();
 
             return balance;
-
         }
     }
 }

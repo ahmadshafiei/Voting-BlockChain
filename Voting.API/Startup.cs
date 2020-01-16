@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Voting.Model.Context;
 using Voting.Infrastructure;
+using Voting.Infrastructure.AutoMapper;
 using Voting.Infrastructure.MiddleWares;
 using Voting.Infrastructure.PeerToPeer;
 using Voting.Infrastructure.Services;
@@ -56,6 +58,8 @@ namespace Voting.API
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddHttpContextAccessor();
+
             services.AddScoped<BlockService>();
             services.AddScoped<BlockChainService>();
             services.AddScoped<TransactionPoolService>();
@@ -64,11 +68,14 @@ namespace Voting.API
             services.AddScoped<MinerService>();
             services.AddScoped<ProfileService>();
             services.AddScoped<ElectionService>();
+            services.AddScoped<VotingService>();
 
             services.AddSingleton<BlockChain>();
             services.AddSingleton<P2PNetwork>();
 
-            services.AddSingleton<IConfiguration>(_configuration);
+            services.AddSingleton(_configuration);
+
+            services.AddAutoMapper(typeof(ElectionProfile).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

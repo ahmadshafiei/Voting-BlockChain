@@ -10,16 +10,19 @@ using System.Threading.Tasks;
 using System.Threading;
 using Voting.Infrastructure.Utility;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Voting.Model.Entities;
 using Voting.Infrastructure.Services.BlockChainServices;
 using Voting.Infrastructure.Services;
+using Voting.Model.Context;
 
 namespace Voting.Infrastructure.PeerToPeer
 {
     public class P2PNetwork
     {
         private delegate void MessageHandler(IAsyncResult ar);
+
         private ManualResetEvent allDone = new ManualResetEvent(false);
         private ManualResetEvent messageManualReset = new ManualResetEvent(false);
         private readonly IPAddress localhost = IPAddress.Parse("127.0.0.1");
@@ -35,9 +38,9 @@ namespace Voting.Infrastructure.PeerToPeer
         /// <summary>
         /// Initial peers
         /// </summary>
-        public List<string> _peers = Environment.GetEnvironmentVariable("PEERS") != null ?
-            Environment.GetEnvironmentVariable("PEERS").Split(',').ToList() :
-            new List<string>();
+        public List<string> _peers = Environment.GetEnvironmentVariable("PEERS") != null
+            ? Environment.GetEnvironmentVariable("PEERS").Split(',').ToList()
+            : new List<string>();
 
         /// <summary>
         /// All of peers
@@ -49,18 +52,28 @@ namespace Voting.Infrastructure.PeerToPeer
         public P2PNetwork(IConfiguration configuration, IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _p2pPort = Environment.GetEnvironmentVariable("P2P_PORT") != null ?
-                Convert.ToInt32(Environment.GetEnvironmentVariable("P2P_PORT")) :
-                Convert.ToInt32(configuration.GetSection("P2P").GetSection("DEFAULT_PORT").Value);
+            _p2pPort = Environment.GetEnvironmentVariable("P2P_PORT") != null
+                ? Convert.ToInt32(Environment.GetEnvironmentVariable("P2P_PORT"))
+                : Convert.ToInt32(configuration.GetSection("P2P").GetSection("DEFAULT_PORT").Value);
 
             Console.WriteLine($"Current P2P_Port : {_p2pPort}");
             Console.WriteLine($"Initial Peers : {JsonConvert.SerializeObject(_peers)}");
         }
 
-        public void InitialNetwrok()
+        public async Task InitialNetwrok()
         {
+            await InitialBlockchain();
             ConnectToPeers();
             ListenForPeers();
+        }
+
+        private async Task InitialBlockchain()
+        {
+            var db = _serviceProvider.GetService<BlockchainContext>();
+
+            List<Block> blockchain = await db.Blocks.ToListAsync();
+
+            BlockChain.Chain = blockchain;
         }
 
         private void ConnectToPeers()
@@ -123,7 +136,7 @@ namespace Voting.Infrastructure.PeerToPeer
 
         private void AddSocket(IAsyncResult ar)
         {
-            TcpListener listener = (TcpListener)ar.AsyncState;
+            TcpListener listener = (TcpListener) ar.AsyncState;
 
             var clientSocket = listener.EndAcceptSocket(ar);
 
@@ -139,7 +152,7 @@ namespace Voting.Infrastructure.PeerToPeer
         private void SendChainToPeers(Socket socket)
         {
             byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(BlockChain.Chain));
-            byte[] dataType = new byte[] { Convert.ToByte((int)MessageType.Blockchain) };
+            byte[] dataType = new byte[] {Convert.ToByte((int) MessageType.Blockchain)};
             byte[] dataLength = data.Length.To4Byte();
             byte[] packet = dataType.Concat(dataLength).Concat(data).ToArray();
 
@@ -157,7 +170,7 @@ namespace Voting.Infrastructure.PeerToPeer
         private void BroadcastTransactionToPeers(Socket socket, Transaction transaction)
         {
             byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(transaction));
-            byte[] dataType = new byte[] { Convert.ToByte((int)MessageType.Transaction) };
+            byte[] dataType = new byte[] {Convert.ToByte((int) MessageType.Transaction)};
             byte[] dataLength = data.Length.To4Byte();
             byte[] packet = dataType.Concat(dataLength).Concat(data).ToArray();
 
@@ -174,7 +187,7 @@ namespace Voting.Infrastructure.PeerToPeer
 
         private void BroadcastClearTransactionPoolToPeers(Socket socket)
         {
-            byte[] dataType = new byte[] { Convert.ToByte(value: (int)MessageType.ClearTransaction) };
+            byte[] dataType = new byte[] {Convert.ToByte(value: (int) MessageType.ClearTransaction)};
             byte[] packet = dataType.ToArray();
 
             try
@@ -206,11 +219,11 @@ namespace Voting.Infrastructure.PeerToPeer
 
                     AsyncCallback handler = HandleTransactionData;
 
-                    if ((MessageType)messageType.First() == MessageType.Blockchain)
+                    if ((MessageType) messageType.First() == MessageType.Blockchain)
                         handler = HandleBlockchainData;
-                    else if ((MessageType)messageType.First() == MessageType.Transaction)
+                    else if ((MessageType) messageType.First() == MessageType.Transaction)
                         handler = HandleTransactionData;
-                    else if ((MessageType)messageType.First() == MessageType.ClearTransaction)
+                    else if ((MessageType) messageType.First() == MessageType.ClearTransaction)
                     {
                         _transactionPoolService = _serviceProvider.GetService<TransactionPoolService>();
                         _transactionPoolService.ClearPool();
@@ -236,15 +249,13 @@ namespace Voting.Infrastructure.PeerToPeer
                     {
                         messageManualReset.WaitOne();
                     }
-
                 }
-
             });
         }
 
         private void HandleBlockchainData(IAsyncResult ar)
         {
-            var state = (StateObject)ar.AsyncState;
+            var state = (StateObject) ar.AsyncState;
 
             try
             {
@@ -255,7 +266,6 @@ namespace Voting.Infrastructure.PeerToPeer
 
                 Console.WriteLine("Received Blockchain : ");
                 Console.WriteLine(Encoding.UTF8.GetString(state.buffer));
-
             }
             finally
             {
@@ -266,7 +276,7 @@ namespace Voting.Infrastructure.PeerToPeer
 
         private void HandleTransactionData(IAsyncResult ar)
         {
-            var state = (StateObject)ar.AsyncState;
+            var state = (StateObject) ar.AsyncState;
 
             try
             {
@@ -277,7 +287,6 @@ namespace Voting.Infrastructure.PeerToPeer
 
                 Console.WriteLine("Received Transaction : ");
                 Console.WriteLine(Encoding.UTF8.GetString(state.buffer));
-
             }
             finally
             {
@@ -300,7 +309,6 @@ namespace Voting.Infrastructure.PeerToPeer
         {
             _sockets.ForEach(s => BroadcastClearTransactionPoolToPeers(s));
         }
-
     }
 
     public class StateObject
@@ -310,12 +318,10 @@ namespace Voting.Infrastructure.PeerToPeer
 
         // Size of receive buffer.  
         private int _bufferSize;
+
         public int BufferSize
         {
-            get
-            {
-                return _bufferSize;
-            }
+            get { return _bufferSize; }
 
             set
             {
@@ -326,21 +332,18 @@ namespace Voting.Infrastructure.PeerToPeer
 
         // Receive buffer.  
         public byte[] buffer;
+
         // Received data string.  
         public List<Block> BLockchain
         {
-            get
-            {
-                return JsonConvert.DeserializeObject<List<Block>>(Encoding.UTF8.GetString(buffer));
-            }
+            get { return JsonConvert.DeserializeObject<List<Block>>(Encoding.UTF8.GetString(buffer)); }
         }
+
         public Transaction Transaction
         {
-            get
-            {
-                return JsonConvert.DeserializeObject<Transaction>(Encoding.UTF8.GetString(buffer));
-            }
+            get { return JsonConvert.DeserializeObject<Transaction>(Encoding.UTF8.GetString(buffer)); }
         }
+
         public MessageType MessageType { get; set; }
     }
 
