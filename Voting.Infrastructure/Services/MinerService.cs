@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Voting.Model.Entities;
 using Voting.Infrastructure.PeerToPeer;
 using Voting.Infrastructure.Services.BlockChainServices;
@@ -28,13 +29,13 @@ namespace Voting.Infrastructure.Services
             _p2pNetwork = p2PNetwork;
         }
 
-        public Block Mine(Wallet wallet)
+        public async Task<Block> Mine()
         {
-            List<Transaction> validTransactions = _transactionPoolService.GetValidTransactions();
+            List<Transaction> validTransactions = await _transactionPoolService.GetValidTransactions();
 
-            var block = _blockChainService.AddBlock(validTransactions);
+            Block block = await _blockChainService.AddBlock(validTransactions);
 
-            _transactionPoolService.ClearPool();
+            await _transactionPoolService.ClearPool();
 
             _p2pNetwork.BroadcastClearTransactionPool();
 

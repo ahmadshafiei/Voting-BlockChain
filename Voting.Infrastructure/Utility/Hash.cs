@@ -20,7 +20,7 @@ namespace Voting.Infrastructure.Utility
 
         public static byte[] HashTransactionOutput(params TransactionOutput[] outputs)
         {
-            return HashString(JsonConvert.SerializeObject(outputs));
+            return HashString(JsonConvert.SerializeObject(outputs , new JsonSerializerSettings(){PreserveReferencesHandling =  PreserveReferencesHandling.Objects}));
         }
 
         private static byte[] HashString(string data)

@@ -13,8 +13,6 @@ namespace Voting.Infrastructure.Services
     public class TransactionPoolService
     {
         private readonly TransactionService _transactionService;
-
-        public List<Transaction> Transactions = new List<Transaction>();
         private readonly BlockchainContext _dbContext;
 
         public TransactionPoolService(TransactionService transactionService, BlockchainContext dbContext)
@@ -23,9 +21,21 @@ namespace Voting.Infrastructure.Services
             _dbContext = dbContext;
         }
 
-        public async Task UpdateOrAddTransaction(Transaction transaction)
+        public void UpdateOrAddTransaction(Transaction transaction)
         {
             bool editMode = _dbContext.Transactions.Any(t => t.Id == transaction.Id);
+
+            if (editMode)
+                _dbContext.Update(transaction);
+            else
+                _dbContext.Add(transaction);
+
+            _dbContext.SaveChanges();
+        }
+
+        public async Task UpdateOrAddTransactionAsync(Transaction transaction)
+        {
+            bool editMode = await _dbContext.Transactions.AnyAsync(t => t.Id == transaction.Id);
 
             if (editMode)
                 _dbContext.Update(transaction);
@@ -41,12 +51,15 @@ namespace Voting.Infrastructure.Services
                 .Include(t => t.Input)
                 .Include(t => t.Outputs)
                 .SingleOrDefaultAsync(t => t.Input.Address == publicKey);
+
             return transaction;
         }
 
-        public List<Transaction> GetValidTransactions()
+        public async Task<List<Transaction>> GetValidTransactions()
         {
-            return Transactions.Where(t =>
+            List<Transaction> transactions = await _dbContext.Transactions.ToListAsync();
+
+            return transactions.Where(t =>
             {
                 if (!_transactionService.VerifyTransaction(t))
                 {
@@ -58,9 +71,10 @@ namespace Voting.Infrastructure.Services
             }).ToList();
         }
 
-        public void ClearPool()
+        public async Task ClearPool()
         {
-            Transactions = new List<Transaction>();
+            _dbContext.Transactions.RemoveRange();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

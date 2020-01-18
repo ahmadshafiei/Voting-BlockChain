@@ -12,11 +12,9 @@ namespace Voting.Model.Context
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionInput> TransactionInputs { get; set; }
         public DbSet<TransactionOutput> TransactionOutputs { get; set; }
-        public DbSet<Election> Elections { get; set; }
-        public DbSet<ElectionCandidate> ElectionCandidates { get; set; }
         public DbSet<Block> Blocks { get; set; }
 
-        public BlockchainContext(DbContextOptions opt) : base(opt)
+        public BlockchainContext(DbContextOptions<BlockchainContext> opt) : base(opt)
         {
             Database.EnsureCreated();
         }
@@ -41,7 +39,7 @@ namespace Voting.Model.Context
 
             string connection = string.Format(config.GetConnectionString("BlockchainContext"), p2p_port);
 
-            optionsBuilder.UseSqlServer(string.Format(connectionString, p2p_port));
+            optionsBuilder.UseSqlServer(connection);
 
             var context = new BlockchainContext(optionsBuilder.Options);
 

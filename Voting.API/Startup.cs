@@ -46,6 +46,9 @@ namespace Voting.API
             services.AddDbContext<BlockchainContext>(opt =>
                 opt.UseSqlServer(connection));
 
+            services.AddDbContext<BlockchainCommonContext>(opt =>
+                opt.UseSqlServer(_configuration.GetConnectionString("BlockchainCommonContext")));
+
             services.AddCors(opt =>
             {
                 opt.AddPolicy("BlockChain Policy", builder =>

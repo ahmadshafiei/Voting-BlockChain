@@ -15,6 +15,7 @@
         </e>
         <e p="Config.cs" t="Include" />
         <e p="Context" t="Include">
+          <e p="BlockchainCommonContext.cs" t="Include" />
           <e p="BlockchainContext.cs" t="Include" />
         </e>
         <e p="Entities" t="Include">
@@ -34,8 +35,13 @@
           <e p="ValidationException.cs" t="Include" />
         </e>
         <e p="Migrations" t="Include">
-          <e p="20200111204014_Initial.Designer.cs" t="Include" />
-          <e p="20200111204014_Initial.cs" t="Include" />
+          <e p="20200117121845_initial.Designer.cs" t="Include" />
+          <e p="20200117121845_initial.cs" t="Include" />
+          <e p="BlockchainCommon" t="Include">
+            <e p="20200117122120_initial.Designer.cs" t="Include" />
+            <e p="20200117122120_initial.cs" t="Include" />
+            <e p="BlockchainCommonContextModelSnapshot.cs" t="Include" />
+          </e>
           <e p="BlockchainContextModelSnapshot.cs" t="Include" />
         </e>
         <e p="Votin.Model.csproj" t="IncludeRecursive" />
@@ -92,7 +98,9 @@
         <e p="BlockChain.cs" t="Include" />
         <e p="DTO" t="Include">
           <e p="Election" t="Include">
+            <e p="CandidatedElection.cs" t="Include" />
             <e p="ElectionDTO.cs" t="Include" />
+            <e p="ParticipatedElection.cs" t="Include" />
           </e>
           <e p="Profile" t="Include">
             <e p="WalletDTO.cs" t="Include" />

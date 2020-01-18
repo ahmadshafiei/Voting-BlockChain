@@ -17,16 +17,19 @@ using Voting.Infrastructure.API.Election;
 using Voting.Infrastructure.DTO.Election;
 using Voting.Infrastructure.Model.Common;
 using Voting.Infrastructure.Model.Election;
+using ValidationException = Voting.Model.Exceptions.ValidationException;
 
 namespace Voting.Infrastructure.Services
 {
     public class ElectionService
     {
+        private readonly BlockchainCommonContext _commonDbContext;
         private readonly BlockchainContext _dbContext;
         private readonly IMapper _mapper;
 
-        public ElectionService(BlockchainContext dbContext, IMapper mapper)
+        public ElectionService(BlockchainCommonContext commonDbContext, BlockchainContext dbContext, IMapper mapper)
         {
+            _commonDbContext = commonDbContext;
             _dbContext = dbContext;
             _mapper = mapper;
         }
@@ -39,9 +42,9 @@ namespace Voting.Infrastructure.Services
 
             election.Address = EthECKey.GenerateKey().GetPublicAddress();
 
-            _dbContext.Elections.Add(election);
+            _commonDbContext.Elections.Add(election);
 
-            await _dbContext.SaveChangesAsync();
+            await _commonDbContext.SaveChangesAsync();
 
             return election;
         }
@@ -64,7 +67,7 @@ namespace Voting.Infrastructure.Services
 
         public async Task<Election> UpdateElectionAsync(UpdateElection election)
         {
-            Election old = _dbContext.Elections
+            Election old = _commonDbContext.Elections
                 .Include(e => e.Candidates)
                 .SingleOrDefault(e => e.Id == election.Id);
 
@@ -75,28 +78,36 @@ namespace Voting.Infrastructure.Services
 
             ValidateElectionCandidate(candidates);
 
-            _dbContext.RemoveRange(old.Candidates);
-            await _dbContext.ElectionCandidates.AddRangeAsync(candidates);
+            _commonDbContext.RemoveRange(old.Candidates);
+            await _commonDbContext.ElectionCandidates.AddRangeAsync(candidates);
 
             old.Name = election.Name;
 
-            _dbContext.Elections.Update(old);
+            _commonDbContext.Elections.Update(old);
 
-            await _dbContext.SaveChangesAsync();
+            await _commonDbContext.SaveChangesAsync();
 
             return old;
         }
 
         public async Task RemoveElectionAsync(int electionId)
         {
-            Election election = await _dbContext.Elections.SingleOrDefaultAsync(e => e.Id == electionId);
+            Election election = await _commonDbContext.Elections.SingleOrDefaultAsync(e => e.Id == electionId);
 
             if (election == null)
                 throw new NotFoundException("انتخابات");
 
-            _dbContext.Elections.Remove(election);
+            bool usedInBlockchain = BlockChain.Chain.Any(b =>
+                b.Data.Any(t => t.Outputs.Any(o => o.ElectionAddress == election.Address)));
+            bool usedInTransactions =
+                await _dbContext.Transactions.AnyAsync(t => t.Outputs.Any(o => o.ElectionAddress == election.Address));
 
-            await _dbContext.SaveChangesAsync();
+            if (usedInBlockchain || usedInTransactions)
+                throw new ValidationException("در این انتخابات رای گیری انجام شده و امکان حذف آن نیست");
+
+            _commonDbContext.Elections.Remove(election);
+
+            await _commonDbContext.SaveChangesAsync();
         }
 
         public async Task<PagedResult<ElectionDTO>> GetElectionsAsync(ElectionSearch model)
@@ -106,7 +117,7 @@ namespace Voting.Infrastructure.Services
             model.Name = model.Name ?? "";
             model.Address = model.Address ?? "";
 
-            var elections = _dbContext.Elections
+            var elections = _commonDbContext.Elections
                 .Where(e => e.Name.Contains(model.Name) &&
                             e.Address.Contains(model.Address))
                 .OrderByDescending(e => e.InsertDate)
@@ -121,7 +132,7 @@ namespace Voting.Infrastructure.Services
 
         public async Task<Election> AddCandidateToElectionAsync(int electionId, string candidateAddress)
         {
-            Election election = await _dbContext.Elections
+            Election election = await _commonDbContext.Elections
                 .Include(e => e.Candidates)
                 .SingleOrDefaultAsync(e => e.Id == electionId);
 
@@ -136,9 +147,9 @@ namespace Voting.Infrastructure.Services
                     Candidate = candidateAddress
                 };
 
-                _dbContext.ElectionCandidates.Add(candidate);
+                _commonDbContext.ElectionCandidates.Add(candidate);
 
-                await _dbContext.SaveChangesAsync();
+                await _commonDbContext.SaveChangesAsync();
 
                 election.Candidates.Add(candidate);
             }
@@ -148,7 +159,7 @@ namespace Voting.Infrastructure.Services
 
         public async Task<ElectionDTO> GetElectionAsync(int electionId)
         {
-            ElectionDTO election = await _dbContext.Elections
+            ElectionDTO election = await _commonDbContext.Elections
                 .Include(e => e.Candidates)
                 .ProjectTo<ElectionDTO>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync(e => e.Id == electionId);
@@ -161,7 +172,7 @@ namespace Voting.Infrastructure.Services
 
         public async Task<List<ElectionDTO>> GetUnvotedElections(string voterPublicKey)
         {
-            List<Election> allElections = await _dbContext.Elections
+            List<Election> allElections = await _commonDbContext.Elections
                 .Include(e => e.Candidates)
                 .ToListAsync();
 
@@ -171,9 +182,67 @@ namespace Voting.Infrastructure.Services
                 .Where(t => t.Address == voterPublicKey)
                 .Select(t => t.Address).ToList();
 
+            List<string> transactionVotes = await _dbContext.Transactions
+                .Where(t => t.Input.Address == voterPublicKey)
+                .SelectMany(t => t.Outputs.Select(o => o.ElectionAddress))
+                .ToListAsync();
+
+            votedElectionAddresses.AddRange(transactionVotes);
+
             allElections.RemoveAll(e => votedElectionAddresses.Contains(e.Address));
 
             return _mapper.Map<List<ElectionDTO>>(allElections);
+        }
+
+        public async Task<List<ParticipatedElection>> GetParticipatedElectionsAsync(string voterAddress)
+        {
+            List<ParticipatedElection> participatedElections = BlockChain.Chain
+                .SelectMany(b => b.Data)
+                .Where(i => i.Input.Address == voterAddress)
+                .SelectMany(t => t.Outputs)
+                .Select(o => new ParticipatedElection
+                {
+                    ElectionAddress = o.ElectionAddress,
+                    Candidate = o.CandidateAddress
+                })
+                .ToList();
+
+            foreach (var participatedElection in participatedElections)
+            {
+                Election election = await _commonDbContext.Elections.SingleOrDefaultAsync(e =>
+                    e.Address == participatedElection.ElectionAddress);
+
+                if (election != null)
+                    participatedElection.ElectionName = election.Name;
+            }
+
+            return participatedElections;
+        }
+
+        public async Task<List<CandidatedElection>> CandidatedElectionAsync(string publicKey)
+        {
+            List<CandidatedElection> candidatedElections = BlockChain.Chain
+                .SelectMany(b => b.Data)
+                .SelectMany(t => t.Outputs)
+                .Where(o => o.CandidateAddress == publicKey)
+                .GroupBy(o => o.ElectionAddress)
+                .Select(e => new CandidatedElection
+                {
+                    ElectionAddress = e.Key,
+                    Vouters = e.Select(o => o.Transaction.Input.Address).ToList()
+                })
+                .ToList();
+            
+            foreach (var candidatedElection in candidatedElections)
+            {
+                Election election = await _commonDbContext.Elections.SingleOrDefaultAsync(e =>
+                    e.Address == candidatedElection.ElectionAddress);
+
+                if (election != null)
+                    candidatedElection.ElectionName = election.Name;
+            }
+
+            return candidatedElections;
         }
     }
 }

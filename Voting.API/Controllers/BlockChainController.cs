@@ -54,39 +54,28 @@ namespace Voting.API.Controllers
         {
             return Ok(BlockChain.Chain);
         }
-
-
-        [HttpGet]
-        public IActionResult GetTransactions()
-        {
-            return Ok(_transactionPoolService.Transactions);
-        }
-
-
-        [HttpPost]
-        public IActionResult AddTransaction(TransactionData transaction)
-        {
-            Model.Entities.Transaction t = _walletService.CreateTransaction(_wallet, transaction.ElectionAddress, transaction.CandidateAddress, _transactionPoolService);
-
-            _p2pNetwork.BroadcastTransaction(t);
-
-            return Ok(_transactionPoolService.Transactions);
-        }
-
+        //
+        //
+        // [HttpGet]
+        // public IActionResult GetTransactions()
+        // {
+        //     return Ok(_transactionPoolService.Transactions);
+        // }
+        //
         [HttpGet]
         public IActionResult GetPublicKey()
         {
             return Ok(_wallet.PublicKey);
         }
-
-        [HttpGet]
-        public IActionResult MineTransaction()
-        {
-            Block block = _minerService.Mine(_wallet);
-
-            Console.WriteLine(JsonConvert.SerializeObject(block));
-
-            return GetBlockChain();
-        }
+        //
+        // [HttpGet]
+        // public IActionResult MineTransaction()
+        // {
+        //     Block block = _minerService.Mine(_wallet);
+        //
+        //     Console.WriteLine(JsonConvert.SerializeObject(block));
+        //
+        //     return GetBlockChain();
+        // }
     }
 }

@@ -68,7 +68,7 @@ namespace Voting.Infrastructure.Services
 
         public void SignTransaction(Transaction transaction, Wallet sender, bool isUpdating = false)
         {
-            if (isUpdating)
+            if (!isUpdating)
                 transaction.Input = new TransactionInput
                 {
                     Address = sender.PublicKey,

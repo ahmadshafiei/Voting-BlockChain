@@ -13,26 +13,25 @@ namespace Voting.Infrastructure.Services
     {
         private readonly TransactionService _transactionService;
         private readonly BlockchainContext _dbContext;
+        private readonly TransactionPoolService _transactionPool;
 
-        public WalletService(TransactionService transactionService,BlockchainContext dbContext)
+        public WalletService(TransactionService transactionService, BlockchainContext dbContext,TransactionPoolService transactionPool)
         {
             _transactionService = transactionService;
             _dbContext = dbContext;
+            _transactionPool = transactionPool;
         }
 
-        public async Task<Transaction> CreateTransaction(Wallet wallet, string electionAddress, string candidateAddress,
-            TransactionPoolService transactionPool)
+        public async Task<Transaction> CreateTransaction(Wallet wallet, string electionAddress, string candidateAddress)
         {
-            Transaction transaction = await transactionPool.ExistingTransaction(wallet.PublicKey);
+            Transaction transaction = await _transactionPool.ExistingTransaction(wallet.PublicKey);
 
             if (transaction == null)
-            {
                 transaction = _transactionService.NewTransaction(wallet, electionAddress, candidateAddress);
-            }
             else
                 _transactionService.UpdateTransaction(transaction, wallet, electionAddress, candidateAddress);
 
-            await transactionPool.UpdateOrAddTransaction(transaction);
+            await _transactionPool.UpdateOrAddTransactionAsync(transaction);
 
             return transaction;
         }

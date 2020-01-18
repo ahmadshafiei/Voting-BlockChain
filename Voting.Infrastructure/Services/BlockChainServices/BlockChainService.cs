@@ -28,14 +28,14 @@ namespace Voting.Infrastructure.Services.BlockChainServices
             _dbContext = dbContext;
         }
 
-        public Block AddBlock(List<Transaction> data)
+        public async Task<Block> AddBlock(List<Transaction> data)
         {
             Block lastBlock = BlockChain.Chain.Last();
 
             Block block = _blockService.MineBlock(lastBlock, data);
 
             _dbContext.Blocks.Add(block);
-            _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             BlockChain.Chain.Add(block);
 

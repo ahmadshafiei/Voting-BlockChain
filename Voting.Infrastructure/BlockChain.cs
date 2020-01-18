@@ -34,7 +34,7 @@ namespace Voting.Infrastructure
             Block genesis = new Block
             {
                 Timestamp = DateTime.MinValue.Ticks,
-                Data = null,
+                Data = new List<Transaction>(),
                 PreviousHash = null,
                 Nonce = 0,
                 Difficulty = Config.DIFFICULTY
