@@ -1,0 +1,11 @@
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/bin/Transactions/netcoreapp2.1/Voting.Model.deps.json
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/bin/Transactions/netcoreapp2.1/Voting.Model.runtimeconfig.json
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/bin/Transactions/netcoreapp2.1/Voting.Model.runtimeconfig.dev.json
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/bin/Transactions/netcoreapp2.1/Voting.Model.dll
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/bin/Transactions/netcoreapp2.1/Voting.Model.pdb
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/obj/Transactions/netcoreapp2.1/Votin.Model.csprojAssemblyReference.cache
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/obj/Transactions/netcoreapp2.1/Votin.Model.csproj.CoreCompileInputs.cache
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/obj/Transactions/netcoreapp2.1/Votin.Model.AssemblyInfoInputs.cache
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/obj/Transactions/netcoreapp2.1/Votin.Model.AssemblyInfo.cs
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/obj/Transactions/netcoreapp2.1/Voting.Model.dll
+/home/ahmad/Programming/VotingBlockchain/API/Voting-BlockChain/Votin.Model/obj/Transactions/netcoreapp2.1/Voting.Model.pdb

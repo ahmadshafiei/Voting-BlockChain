@@ -30,7 +30,7 @@ namespace Voting.Infrastructure
         /// <returns>Returns first block of chain (GENESIS)</returns>
         public static Block GenesisBlock()
         {
-            //genesis should be samething across all peers otherwise we get exception on synchronization
+            //genesis should be same thing across all peers otherwise we get exception on synchronization
             Block genesis = new Block
             {
                 Timestamp = DateTime.MinValue.Ticks,
