@@ -84,8 +84,6 @@ namespace Voting.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.ApplicationServices.GetService<P2PNetwork>().InitialNetwrok();
-
             app.UseCors("BlockChain Policy");
 
             app.UseExceptionHandlerMiddleware();

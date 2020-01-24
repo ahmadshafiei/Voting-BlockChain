@@ -9,7 +9,7 @@ namespace Voting.Infrastructure.Utility
 {
     public static class Hash
     {
-        private static SHA256 sha256 = SHA256.Create();
+        private readonly static HMACSHA256 sha256 = new HMACSHA256(Encoding.UTF8.GetBytes("PRIVATE_KEY"));
 
         public static byte[] HashBlock(this Block block)
         {
@@ -18,13 +18,21 @@ namespace Voting.Infrastructure.Utility
             return HashString(hashValue);
         }
 
-        public static byte[] HashTransactionOutput(params TransactionOutput[] outputs)
+        public static byte[] HashTransactionOutput(/*bool setUTC =false ,*/ params TransactionOutput[] outputs)
         {
-            return HashString(JsonConvert.SerializeObject(outputs , new JsonSerializerSettings(){PreserveReferencesHandling =  PreserveReferencesHandling.Objects}));
+            List<TransactionOutput> hashedOutputs = new List<TransactionOutput>();
+
+            foreach (TransactionOutput output in outputs)
+                hashedOutputs.Add(new TransactionOutput(output.ElectionAddress, output.CandidateAddress)
+                {
+                    Timestamp =/*setUTC ?*/ output.Timestamp.ToUniversalTime() /*: output.Timestamp,*/
+                });
+
+            return HashString(JsonConvert.SerializeObject(hashedOutputs));
         }
 
         private static byte[] HashString(string data)
-        {            
+        {
             return sha256.ComputeHash(Encoding.UTF8.GetBytes(data));
         }
     }

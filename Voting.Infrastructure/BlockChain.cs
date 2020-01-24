@@ -12,18 +12,6 @@ namespace Voting.Infrastructure
     {
         public static List<Block> Chain { get; set; } = new List<Block>();
 
-        static BlockChain()
-        {
-            if (!Chain.Any())
-                Chain.Add(GenesisBlock());
-        }
-
-        public BlockChain()
-        {
-            if (!Chain.Any())
-                Chain.Add(GenesisBlock());
-        }
-
         /// <summary>
         /// First block in chain
         /// </summary>
@@ -34,7 +22,7 @@ namespace Voting.Infrastructure
             Block genesis = new Block
             {
                 Timestamp = DateTime.MinValue.Ticks,
-                Data = new List<Transaction>(),
+                Data = "[]",
                 PreviousHash = null,
                 Nonce = 0,
                 Difficulty = Config.DIFFICULTY

@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Voting.Infrastructure.Utility;
 using Voting.Model.Entities;
 
 namespace Voting.Model.Context
@@ -17,6 +19,25 @@ namespace Voting.Model.Context
         public BlockchainContext(DbContextOptions<BlockchainContext> opt) : base(opt)
         {
             Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            var genesis = new Block
+            {
+                Id = 1,
+                Timestamp = DateTime.MinValue.Ticks,
+                Data = "[]",
+                PreviousHash = null,
+                Nonce = 0,
+                Difficulty = Config.DIFFICULTY,
+            };
+
+            genesis.Hash = Hash.HashBlock(genesis);
+            
+            modelBuilder.Entity<Block>().HasData(genesis);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 

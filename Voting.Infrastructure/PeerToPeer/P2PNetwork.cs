@@ -60,21 +60,12 @@ namespace Voting.Infrastructure.PeerToPeer
             Console.WriteLine($"Initial Peers : {JsonConvert.SerializeObject(_peers)}");
         }
 
-        public async Task InitialNetwrok()
+        public void InitialNetwrok()
         {
-            await InitialBlockchain();
             ConnectToPeers();
             ListenForPeers();
         }
-
-        private async Task InitialBlockchain()
-        {
-            var db = _serviceProvider.GetService<BlockchainContext>();
-
-            List<Block> blockchain = await db.Blocks.ToListAsync();
-
-            BlockChain.Chain = blockchain;
-        }
+        
 
         private void ConnectToPeers()
         {
@@ -151,7 +142,11 @@ namespace Voting.Infrastructure.PeerToPeer
 
         private void SendChainToPeers(Socket socket)
         {
-            byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(BlockChain.Chain));
+            var context =_serviceProvider.GetService<BlockchainContext>();
+
+            var blocks =context.Blocks.ToList();
+            
+            byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(blocks));
             byte[] dataType = new byte[] {Convert.ToByte((int) MessageType.Blockchain)};
             byte[] dataLength = data.Length.To4Byte();
             byte[] packet = dataType.Concat(dataLength).Concat(data).ToArray();

@@ -15,6 +15,7 @@ using Nethereum.Util;
 using System.Text;
 using Voting.Infrastructure.PeerToPeer;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Voting.API.Controllers
@@ -23,59 +24,19 @@ namespace Voting.API.Controllers
     [ApiController]
     public class BlockChainController : ControllerBase
     {
-        private readonly BlockService _blockService;
-        private readonly BlockChainService _blockChainService;
-        private readonly TransactionPoolService _transactionPoolService;
-        private readonly WalletService _walletService;
-        private readonly P2PNetwork _p2pNetwork;
-        private Wallet _wallet;
         private readonly MinerService _minerService;
 
-        public BlockChainController(BlockChainService blockChainService, BlockService blockService, TransactionPoolService transactionPoolService, WalletService walletService, P2PNetwork p2pNetwork
-            , MinerService minerService)
+        public BlockChainController(MinerService minerService)
         {
-            _blockService = blockService;
-            _blockChainService = blockChainService;
-            _transactionPoolService = transactionPoolService;
-            _walletService = walletService;
-            _p2pNetwork = p2pNetwork;
             _minerService = minerService;
-            InitWallet();
         }
-
-        private void InitWallet()
-        {
-            string key = HttpContext.Request.Headers["WalletKey"];
-            _wallet = new Wallet(key);
-        }
-
+        
         [HttpGet]
-        public IActionResult GetBlockChain()
+        public async Task<IActionResult> MineTransaction()
         {
-            return Ok(BlockChain.Chain);
+            Block block = await _minerService.Mine();
+
+            return Ok(block);
         }
-        //
-        //
-        // [HttpGet]
-        // public IActionResult GetTransactions()
-        // {
-        //     return Ok(_transactionPoolService.Transactions);
-        // }
-        //
-        [HttpGet]
-        public IActionResult GetPublicKey()
-        {
-            return Ok(_wallet.PublicKey);
-        }
-        //
-        // [HttpGet]
-        // public IActionResult MineTransaction()
-        // {
-        //     Block block = _minerService.Mine(_wallet);
-        //
-        //     Console.WriteLine(JsonConvert.SerializeObject(block));
-        //
-        //     return GetBlockChain();
-        // }
     }
 }

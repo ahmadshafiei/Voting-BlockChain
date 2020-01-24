@@ -14,10 +14,6 @@
           </e>
         </e>
         <e p="Config.cs" t="Include" />
-        <e p="Context" t="Include">
-          <e p="BlockchainCommonContext.cs" t="Include" />
-          <e p="BlockchainContext.cs" t="Include" />
-        </e>
         <e p="Entities" t="Include">
           <e p="Block.cs" t="Include" />
           <e p="Election.cs" t="Include" />
@@ -33,16 +29,6 @@
           <e p="NotFoundException.cs" t="Include" />
           <e p="UnauthorizedException.cs" t="Include" />
           <e p="ValidationException.cs" t="Include" />
-        </e>
-        <e p="Migrations" t="Include">
-          <e p="20200117121845_initial.Designer.cs" t="Include" />
-          <e p="20200117121845_initial.cs" t="Include" />
-          <e p="BlockchainCommon" t="Include">
-            <e p="20200117122120_initial.Designer.cs" t="Include" />
-            <e p="20200117122120_initial.cs" t="Include" />
-            <e p="BlockchainCommonContextModelSnapshot.cs" t="Include" />
-          </e>
-          <e p="BlockchainContextModelSnapshot.cs" t="Include" />
         </e>
         <e p="Votin.Model.csproj" t="IncludeRecursive" />
         <e p="bin" t="ExcludeRecursive" />
@@ -73,7 +59,10 @@
         <e p="appsettings.Development.json" t="Include" />
         <e p="appsettings.json" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
-        <e p="mono_crash.mem.6413.1.blob" t="Include" />
+        <e p="mono_crash.mem.12197.1.blob" t="Include" />
+        <e p="mono_crash.mem.14345.1.blob" t="Include" />
+        <e p="mono_crash.mem.29069.1.blob" t="Include" />
+        <e p="mono_crash.mem.32414.1.blob" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp2.2" t="Include">
@@ -97,6 +86,10 @@
           <e p="ElectionProfile.cs" t="Include" />
         </e>
         <e p="BlockChain.cs" t="Include" />
+        <e p="Context" t="Include">
+          <e p="BlockchainCommonContext.cs" t="Include" />
+          <e p="BlockchainContext.cs" t="Include" />
+        </e>
         <e p="DTO" t="Include">
           <e p="Election" t="Include">
             <e p="CandidatedElection.cs" t="Include" />
@@ -109,6 +102,20 @@
         </e>
         <e p="MiddleWares" t="Include">
           <e p="ExceptionHandlerMiddleWare.cs" t="Include" />
+        </e>
+        <e p="Migrations" t="Include">
+          <e p="20200117121845_initial.Designer.cs" t="Include" />
+          <e p="20200117121845_initial.cs" t="Include" />
+          <e p="20200123154320_SeedData.Designer.cs" t="Include" />
+          <e p="20200123154320_SeedData.cs" t="Include" />
+          <e p="20200124115613_DataJson.Designer.cs" t="Include" />
+          <e p="20200124115613_DataJson.cs" t="Include" />
+          <e p="BlockchainCommon" t="Include">
+            <e p="20200117122120_initial.Designer.cs" t="Include" />
+            <e p="20200117122120_initial.cs" t="Include" />
+            <e p="BlockchainCommonContextModelSnapshot.cs" t="Include" />
+          </e>
+          <e p="BlockchainContextModelSnapshot.cs" t="Include" />
         </e>
         <e p="Model" t="Include">
           <e p="Common" t="Include">

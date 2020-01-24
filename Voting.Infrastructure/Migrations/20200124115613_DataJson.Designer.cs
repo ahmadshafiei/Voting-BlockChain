@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Voting.Model.Context;
 
 namespace Voting.Model.Migrations
 {
     [DbContext(typeof(BlockchainContext))]
-    partial class BlockchainContextModelSnapshot : ModelSnapshot
+    [Migration("20200124115613_DataJson")]
+    partial class DataJson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,6 +26,8 @@ namespace Voting.Model.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Data");
 
                     b.Property<int>("Difficulty");
 
@@ -38,6 +42,17 @@ namespace Voting.Model.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Blocks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Data = "[]",
+                            Difficulty = 2,
+                            Hash = new byte[] { 76, 138, 47, 41, 137, 101, 32, 5, 136, 170, 19, 208, 175, 228, 48, 222, 168, 0, 52, 184, 228, 69, 124, 35, 140, 25, 214, 14, 199, 169, 202, 93 },
+                            Nonce = 0,
+                            Timestamp = 0L
+                        });
                 });
 
             modelBuilder.Entity("Voting.Model.Entities.Transaction", b =>

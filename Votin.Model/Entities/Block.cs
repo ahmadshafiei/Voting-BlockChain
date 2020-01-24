@@ -13,8 +13,7 @@ namespace Voting.Model.Entities
         public long Timestamp { get; set; }
         public byte[] Hash { get; set; }
         public byte[] PreviousHash { get; set; }
-        [NotMapped]
-        public List<Transaction> Data { get; set; }
+        public string Data { get; set; }
         public int Nonce { get; set; }
         public int Difficulty { get; set; } = Config.DIFFICULTY;
 

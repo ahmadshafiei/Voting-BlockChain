@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Voting.Model.Entities;
 using Voting.Infrastructure;
 using Voting.Infrastructure.Utility;
@@ -30,14 +31,12 @@ namespace Voting.Infrastructure.Services.BlockChainServices
 
         public async Task<Block> AddBlock(List<Transaction> data)
         {
-            Block lastBlock = BlockChain.Chain.Last();
+            Block lastBlock = await _dbContext.Blocks.LastAsync();
 
             Block block = _blockService.MineBlock(lastBlock, data);
 
             _dbContext.Blocks.Add(block);
             await _dbContext.SaveChangesAsync();
-
-            BlockChain.Chain.Add(block);
 
             //Can't use Constructor DI Because of circular injection
             _p2PNetwork = _serviceProvider.GetService<P2PNetwork>();
@@ -66,7 +65,9 @@ namespace Voting.Infrastructure.Services.BlockChainServices
 
         public void ReplaceChain(List<Block> newChain)
         {
-            if (newChain.Count < BlockChain.Chain.Count)
+            var blockCount = _dbContext.Blocks.Count();
+
+            if (newChain.Count < blockCount)
             {
                 Console.WriteLine("Invalid New Chain Length");
                 return;
@@ -77,8 +78,7 @@ namespace Voting.Infrastructure.Services.BlockChainServices
                 Console.WriteLine("Invalid New Chain");
                 return;
             }
-
-            BlockChain.Chain = newChain;
+            
             _dbContext.Blocks.RemoveRange();
             _dbContext.Blocks.AddRange(newChain);
             _dbContext.SaveChanges();

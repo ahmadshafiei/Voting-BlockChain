@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Voting.Model.Entities;
@@ -33,11 +34,16 @@ namespace Voting.Infrastructure.Services
         {
             List<Transaction> validTransactions = await _transactionPoolService.GetValidTransactions();
 
-            Block block = await _blockChainService.AddBlock(validTransactions);
+            Block block = null;
 
-            await _transactionPoolService.ClearPool();
+            if (validTransactions.Any())
+            {
+                block = await _blockChainService.AddBlock(validTransactions);
 
-            _p2pNetwork.BroadcastClearTransactionPool();
+                await _transactionPoolService.ClearPool();
+
+                _p2pNetwork.BroadcastClearTransactionPool();
+            }
 
             return block;
         }

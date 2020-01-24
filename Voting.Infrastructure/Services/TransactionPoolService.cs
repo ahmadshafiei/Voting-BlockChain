@@ -57,7 +57,10 @@ namespace Voting.Infrastructure.Services
 
         public async Task<List<Transaction>> GetValidTransactions()
         {
-            List<Transaction> transactions = await _dbContext.Transactions.ToListAsync();
+            List<Transaction> transactions = await _dbContext.Transactions
+                .Include(t => t.Input)
+                .Include(t => t.Outputs)
+                .ToListAsync();
 
             return transactions.Where(t =>
             {

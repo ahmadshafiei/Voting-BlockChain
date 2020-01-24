@@ -9,6 +9,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Nethereum.Util;
+using Newtonsoft.Json;
 using Votin.Model;
 using Voting.Model.Context;
 using Voting.Model.Entities;
@@ -17,6 +18,7 @@ using Voting.Infrastructure.API.Election;
 using Voting.Infrastructure.DTO.Election;
 using Voting.Infrastructure.Model.Common;
 using Voting.Infrastructure.Model.Election;
+using Transaction = Voting.Model.Entities.Transaction;
 using ValidationException = Voting.Model.Exceptions.ValidationException;
 
 namespace Voting.Infrastructure.Services
@@ -97,8 +99,11 @@ namespace Voting.Infrastructure.Services
             if (election == null)
                 throw new NotFoundException("انتخابات");
 
-            bool usedInBlockchain = BlockChain.Chain.Any(b =>
-                b.Data.Any(t => t.Outputs.Any(o => o.ElectionAddress == election.Address)));
+            bool usedInBlockchain = _dbContext.Blocks
+                .ToList()
+                .SelectMany(b => JsonConvert.DeserializeObject<List<Transaction>>(b.Data))
+                .Any(t => t.Outputs.Any(o => o.ElectionAddress == election.Address));
+
             bool usedInTransactions =
                 await _dbContext.Transactions.AnyAsync(t => t.Outputs.Any(o => o.ElectionAddress == election.Address));
 
@@ -176,9 +181,10 @@ namespace Voting.Infrastructure.Services
                 .Include(e => e.Candidates)
                 .ToListAsync();
 
-            List<string> votedElectionAddresses = BlockChain.Chain
-                .Where(b => b.Data != null)
-                .SelectMany(b => b.Data.Select(t => t.Input))
+            List<string> votedElectionAddresses = _dbContext.Blocks
+                .ToList()
+                .SelectMany(b => JsonConvert.DeserializeObject<List<Transaction>>(b.Data))
+                .Select(t => t.Input)
                 .Where(t => t.Address == voterPublicKey)
                 .Select(t => t.Address).ToList();
 
@@ -196,16 +202,16 @@ namespace Voting.Infrastructure.Services
 
         public async Task<List<ParticipatedElection>> GetParticipatedElectionsAsync(string voterAddress)
         {
-            List<ParticipatedElection> participatedElections = BlockChain.Chain
-                .SelectMany(b => b.Data)
+            List<ParticipatedElection> participatedElections = _dbContext.Blocks
+                .ToList()
+                .SelectMany(b => JsonConvert.DeserializeObject<List<Transaction>>(b.Data))
                 .Where(i => i.Input.Address == voterAddress)
                 .SelectMany(t => t.Outputs)
                 .Select(o => new ParticipatedElection
                 {
                     ElectionAddress = o.ElectionAddress,
                     Candidate = o.CandidateAddress
-                })
-                .ToList();
+                }).ToList();
 
             foreach (var participatedElection in participatedElections)
             {
@@ -221,8 +227,9 @@ namespace Voting.Infrastructure.Services
 
         public async Task<List<CandidatedElection>> CandidatedElectionAsync(string publicKey)
         {
-            List<CandidatedElection> candidatedElections = BlockChain.Chain
-                .SelectMany(b => b.Data)
+            List<CandidatedElection> candidatedElections =  _dbContext.Blocks
+                .ToList()
+                .SelectMany(b => JsonConvert.DeserializeObject<List<Transaction>>(b.Data))
                 .SelectMany(t => t.Outputs)
                 .Where(o => o.CandidateAddress == publicKey)
                 .GroupBy(o => o.ElectionAddress)
@@ -232,7 +239,7 @@ namespace Voting.Infrastructure.Services
                     Vouters = e.Select(o => o.Transaction.Input.Address).ToList()
                 })
                 .ToList();
-            
+
             foreach (var candidatedElection in candidatedElections)
             {
                 Election election = await _commonDbContext.Elections.SingleOrDefaultAsync(e =>

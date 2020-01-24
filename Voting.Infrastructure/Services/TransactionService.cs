@@ -68,22 +68,30 @@ namespace Voting.Infrastructure.Services
 
         public void SignTransaction(Transaction transaction, Wallet sender, bool isUpdating = false)
         {
+            var hashedOutputs = Hash.HashTransactionOutput(transaction.Outputs.ToArray());
+            var hashedoutput = Encoding.UTF8.GetString(hashedOutputs);
+            var signature = Encoding.UTF8.GetString(sender.Sign(hashedOutputs));
+            
             if (!isUpdating)
                 transaction.Input = new TransactionInput
                 {
                     Address = sender.PublicKey,
-                    Signature = sender.Sign(Hash.HashTransactionOutput(transaction.Outputs.ToArray()))
+                    Signature = sender.Sign(hashedOutputs)
                 };
             else
-                transaction.Input.Signature = sender.Sign(Hash.HashTransactionOutput(transaction.Outputs.ToArray()));
+                transaction.Input.Signature = sender.Sign(hashedOutputs);
         }
 
         public bool VerifyTransaction(Transaction transaction)
         {
+            var hashedOutputs = Hash.HashTransactionOutput(transaction.Outputs.ToArray());
+            var signature = Encoding.UTF8.GetString(transaction.Input.Signature);
+            var hasheoutput = Encoding.UTF8.GetString(hashedOutputs);
+            
             return ECCUtility.VerifySignature(
                 transaction.Input.Address,
                 transaction.Input.Signature,
-                Hash.HashTransactionOutput(transaction.Outputs.ToArray())
+                hashedOutputs
             );
         }
     }

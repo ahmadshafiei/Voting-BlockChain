@@ -41,14 +41,15 @@ namespace Voting.Infrastructure.Services
         /// </summary>
         public int CalculateBalance(Wallet wallet, string electionAddress)
         {
-            int balance = wallet.Balance;
-
-            List<Transaction> votes = BlockChain.Chain.SelectMany(c => c.Data).ToList();
-
-            balance += votes.SelectMany(v => v.Outputs)
-                .Where(o => o.CandidateAddress == wallet.PublicKey && o.ElectionAddress == electionAddress).Count();
-
-            return balance;
+            // int balance = wallet.Balance;
+            //
+            // List<Transaction> votes = BlockChain.Chain.SelectMany(c => c.Data).ToList();
+            //
+            // balance += votes.SelectMany(v => v.Outputs)
+            //     .Where(o => o.CandidateAddress == wallet.PublicKey && o.ElectionAddress == electionAddress).Count();
+            //
+            // return balance;
+            return 0;
         }
     }
 }

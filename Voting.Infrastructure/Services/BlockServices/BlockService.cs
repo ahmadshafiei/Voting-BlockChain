@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using Voting.Model;
 using Voting.Model.Entities;
 using Voting.Infrastructure.Utility;
@@ -21,11 +22,14 @@ namespace Voting.Infrastructure.Services.BlockServices
         /// <returns>Newly added block</returns>
         public Block MineBlock(Block previousBlock, List<Transaction> data)
         {
+            string d = JsonConvert.SerializeObject(data,
+                new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
+                
             Block block = new Block
             {
                 Timestamp = DateTime.Now.Ticks,
                 PreviousHash = previousBlock.Hash,
-                Data = data,
+                Data =  d,
                 Nonce = 0,
                 Difficulty = previousBlock.Difficulty
             };
