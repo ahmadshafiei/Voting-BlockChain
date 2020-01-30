@@ -11,12 +11,14 @@ namespace Voting.Model.Context
     {
         public BlockchainCommonContext(DbContextOptions<BlockchainCommonContext> opt) : base(opt)
         {
-            
+            Database.EnsureCreated();
         }
+
+
         public DbSet<Election> Elections { get; set; }
         public DbSet<ElectionCandidate> ElectionCandidates { get; set; }
     }
-    
+
     public class DesignTimeCommonDbContextFactory : IDesignTimeDbContextFactory<BlockchainCommonContext>
     {
         public BlockchainCommonContext CreateDbContext(string[] args)
