@@ -76,7 +76,7 @@ namespace Voting.Infrastructure.Services
 
         public async Task ClearPool()
         {
-            _dbContext.Transactions.RemoveRange();
+            _dbContext.Transactions.RemoveRange(_dbContext.Transactions);
             await _dbContext.SaveChangesAsync();
         }
     }

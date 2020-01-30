@@ -6,6 +6,6 @@ namespace Voting.Infrastructure.DTO.Election
     {
         public string ElectionAddress { get; set; }
         public string ElectionName { get; set; }
-        public List<string> Vouters { get; set; }
+        public List<string> Voters { get; set; }
     }
 }

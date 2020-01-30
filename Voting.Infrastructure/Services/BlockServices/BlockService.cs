@@ -24,12 +24,12 @@ namespace Voting.Infrastructure.Services.BlockServices
         {
             string d = JsonConvert.SerializeObject(data,
                 new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
-                
+
             Block block = new Block
             {
                 Timestamp = DateTime.Now.Ticks,
                 PreviousHash = previousBlock.Hash,
-                Data =  d,
+                Data = d,
                 Nonce = 0,
                 Difficulty = previousBlock.Difficulty
             };
@@ -49,7 +49,9 @@ namespace Voting.Infrastructure.Services.BlockServices
         {
             int difficulty = previousBlock.Difficulty;
 
-            return previousBlock.Timestamp + Config.MINE_RATE > timestamp ? difficulty + 1 : difficulty - 1;
+            return previousBlock.Timestamp + Config.MINE_RATE > timestamp
+                ? difficulty + 1
+                : (difficulty > 1 ? difficulty - 1 : 1);
         }
     }
 }

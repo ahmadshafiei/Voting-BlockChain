@@ -10,6 +10,7 @@ using Voting.Infrastructure.Utility;
 using Voting.Infrastructure.Services.BlockServices;
 using Voting.Infrastructure.PeerToPeer;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Voting.Model.Context;
 
 namespace Voting.Infrastructure.Services.BlockChainServices
@@ -67,6 +68,10 @@ namespace Voting.Infrastructure.Services.BlockChainServices
         {
             var blockCount = _dbContext.Blocks.Count();
 
+            var blocks = _dbContext.Blocks.ToList();
+            
+            Console.WriteLine("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+
             if (newChain.Count < blockCount)
             {
                 Console.WriteLine("Invalid New Chain Length");
@@ -79,7 +84,8 @@ namespace Voting.Infrastructure.Services.BlockChainServices
                 return;
             }
             
-            _dbContext.Blocks.RemoveRange();
+            Console.WriteLine("222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222");
+            _dbContext.Blocks.RemoveRange(_dbContext.Blocks);
             _dbContext.Blocks.AddRange(newChain);
             _dbContext.SaveChanges();
         }

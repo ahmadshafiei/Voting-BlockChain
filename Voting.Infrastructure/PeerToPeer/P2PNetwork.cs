@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Voting.Infrastructure.Utility;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Voting.Model.Entities;
@@ -65,7 +66,7 @@ namespace Voting.Infrastructure.PeerToPeer
             ConnectToPeers();
             ListenForPeers();
         }
-        
+
 
         private void ConnectToPeers()
         {
@@ -142,29 +143,33 @@ namespace Voting.Infrastructure.PeerToPeer
 
         private void SendChainToPeers(Socket socket)
         {
-            var context =_serviceProvider.GetService<BlockchainContext>();
-
-            var blocks =context.Blocks.ToList();
-            
-            byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(blocks));
-            byte[] dataType = new byte[] {Convert.ToByte((int) MessageType.Blockchain)};
-            byte[] dataLength = data.Length.To4Byte();
-            byte[] packet = dataType.Concat(dataLength).Concat(data).ToArray();
-
-            try
+            using (var scope = _serviceProvider.CreateScope())
             {
-                int s = socket.Send(packet);
-                Console.WriteLine("Blockchain Broadcasted to peers");
-            }
-            catch (Exception e)
-            {
-                throw e;
+                var context = scope.ServiceProvider.GetService<BlockchainContext>();
+
+                var blocks = context.Blocks.ToList();
+
+                byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(blocks));
+                byte[] dataType = new byte[] {Convert.ToByte((int) MessageType.Blockchain)};
+                byte[] dataLength = data.Length.To4Byte();
+                byte[] packet = dataType.Concat(dataLength).Concat(data).ToArray();
+
+                try
+                {
+                    int s = socket.Send(packet);
+                    Console.WriteLine("Blockchain Broadcasted to peers");
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
             }
         }
 
         private void BroadcastTransactionToPeers(Socket socket, Transaction transaction)
         {
-            byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(transaction));
+            byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(transaction,
+                new JsonSerializerSettings {ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
             byte[] dataType = new byte[] {Convert.ToByte((int) MessageType.Transaction)};
             byte[] dataLength = data.Length.To4Byte();
             byte[] packet = dataType.Concat(dataLength).Concat(data).ToArray();
@@ -220,10 +225,13 @@ namespace Voting.Infrastructure.PeerToPeer
                         handler = HandleTransactionData;
                     else if ((MessageType) messageType.First() == MessageType.ClearTransaction)
                     {
-                        _transactionPoolService = _serviceProvider.GetService<TransactionPoolService>();
-                        _transactionPoolService.ClearPool();
-                        messageManualReset.Set();
-                        continue;
+                        using (var scope = _serviceProvider.CreateScope())
+                        {
+                            _transactionPoolService = scope.ServiceProvider.GetService<TransactionPoolService>();
+                            _transactionPoolService.ClearPool();
+                            messageManualReset.Set();
+                            continue;
+                        }
                     }
 
                     byte[] bufferSize = new byte[4];
@@ -254,13 +262,20 @@ namespace Voting.Infrastructure.PeerToPeer
 
             try
             {
-                List<Block> incomingChain = state.BLockchain;
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    List<Block> incomingChain = state.Blockchain;
 
-                _blockChainService = _serviceProvider.GetService<BlockChainService>();
-                _blockChainService.ReplaceChain(incomingChain);
+                    incomingChain.ForEach(b => b.Id = 0);
+                    Console.WriteLine(JsonConvert.SerializeObject(state.Blockchain));
 
-                Console.WriteLine("Received Blockchain : ");
-                Console.WriteLine(Encoding.UTF8.GetString(state.buffer));
+                    _blockChainService = scope.ServiceProvider.GetService<BlockChainService>();
+
+                    _blockChainService.ReplaceChain(incomingChain);
+
+                    Console.WriteLine("Received Blockchain : ");
+                    Console.WriteLine(Encoding.UTF8.GetString(state.buffer));
+                }
             }
             finally
             {
@@ -275,13 +290,20 @@ namespace Voting.Infrastructure.PeerToPeer
 
             try
             {
-                Transaction transaction = state.Transaction;
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    Transaction transaction = state.Transaction;
 
-                _transactionPoolService = _serviceProvider.GetService<TransactionPoolService>();
-                _transactionPoolService.UpdateOrAddTransaction(transaction);
+                    transaction.Id = 0;
+                    transaction.Input.Id = 0;
+                    transaction.Outputs.ForEach(o => o.Id = 0);
 
-                Console.WriteLine("Received Transaction : ");
-                Console.WriteLine(Encoding.UTF8.GetString(state.buffer));
+                    _transactionPoolService = scope.ServiceProvider.GetService<TransactionPoolService>();
+                    _transactionPoolService.UpdateOrAddTransaction(transaction);
+
+                    Console.WriteLine("Received Transaction : ");
+                    Console.WriteLine(Encoding.UTF8.GetString(state.buffer));
+                }
             }
             finally
             {
@@ -329,7 +351,7 @@ namespace Voting.Infrastructure.PeerToPeer
         public byte[] buffer;
 
         // Received data string.  
-        public List<Block> BLockchain
+        public List<Block> Blockchain
         {
             get { return JsonConvert.DeserializeObject<List<Block>>(Encoding.UTF8.GetString(buffer)); }
         }

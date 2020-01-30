@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Nethereum.Util;
 using Newtonsoft.Json;
 using Votin.Model;
@@ -57,7 +58,8 @@ namespace Voting.Infrastructure.Services
 
             electionCandidates.ForEach(c =>
             {
-                if (!AddressExtensions.IsValidEthereumAddressHexFormat(c.Candidate))
+                if (c.Candidate.Length != 130 || c.Candidate.Any(ch =>
+                        !((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))))
                     invalidCandidates.Add(c.Candidate);
             });
 
@@ -184,9 +186,8 @@ namespace Voting.Infrastructure.Services
             List<string> votedElectionAddresses = _dbContext.Blocks
                 .ToList()
                 .SelectMany(b => JsonConvert.DeserializeObject<List<Transaction>>(b.Data))
-                .Select(t => t.Input)
-                .Where(t => t.Address == voterPublicKey)
-                .Select(t => t.Address).ToList();
+                .Where(t => t.Input.Address == voterPublicKey)
+                .SelectMany(t => t.Outputs.Select(o => o.ElectionAddress)).ToList();
 
             List<string> transactionVotes = await _dbContext.Transactions
                 .Where(t => t.Input.Address == voterPublicKey)
@@ -196,7 +197,11 @@ namespace Voting.Infrastructure.Services
             votedElectionAddresses.AddRange(transactionVotes);
 
             allElections.RemoveAll(e => votedElectionAddresses.Contains(e.Address));
+            
+            allElections.ForEach(e => e.Candidates.RemoveAll(c => c.Candidate == voterPublicKey));
 
+            allElections.RemoveAll(e => !e.Candidates.Any());
+            
             return _mapper.Map<List<ElectionDTO>>(allElections);
         }
 
@@ -227,18 +232,24 @@ namespace Voting.Infrastructure.Services
 
         public async Task<List<CandidatedElection>> CandidatedElectionAsync(string publicKey)
         {
-            List<CandidatedElection> candidatedElections =  _dbContext.Blocks
+            List<Transaction> transactions = _dbContext.Blocks
                 .ToList()
                 .SelectMany(b => JsonConvert.DeserializeObject<List<Transaction>>(b.Data))
-                .SelectMany(t => t.Outputs)
-                .Where(o => o.CandidateAddress == publicKey)
-                .GroupBy(o => o.ElectionAddress)
-                .Select(e => new CandidatedElection
-                {
-                    ElectionAddress = e.Key,
-                    Vouters = e.Select(o => o.Transaction.Input.Address).ToList()
-                })
                 .ToList();
+
+            transactions.ForEach(t => t.Outputs.ForEach(o => o.Transaction = t));
+
+            List<CandidatedElection> candidatedElections =
+                transactions
+                    .SelectMany(t => t.Outputs)
+                    .Where(o => o.CandidateAddress == publicKey)
+                    .GroupBy(o => o.ElectionAddress)
+                    .Select(e => new CandidatedElection
+                    {
+                        ElectionAddress = e.Key,
+                        Voters = e.Select(o => o.Transaction.Input.Address).ToList()
+                    })
+                    .ToList();
 
             foreach (var candidatedElection in candidatedElections)
             {
