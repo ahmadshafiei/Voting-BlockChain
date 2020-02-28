@@ -21,6 +21,7 @@
           <e p="Transaction.cs" t="Include" />
           <e p="TransactionInput.cs" t="Include" />
           <e p="TransactionOutput.cs" t="Include" />
+          <e p="User.cs" t="Include" />
           <e p="Wallet.cs" t="Include" />
         </e>
         <e p="Exceptions" t="Include">
@@ -59,7 +60,12 @@
         <e p="appsettings.Development.json" t="Include" />
         <e p="appsettings.json" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
-        <e p="mono_crash.mem.5767.1.blob" t="Include" />
+        <e p="mono_crash.mem.11397.1.blob" t="Include" />
+        <e p="mono_crash.mem.14298.1.blob" t="Include" />
+        <e p="mono_crash.mem.14515.1.blob" t="Include" />
+        <e p="mono_crash.mem.17600.1.blob" t="Include" />
+        <e p="mono_crash.mem.27288.1.blob" t="Include" />
+        <e p="mono_crash.mem.31548.1.blob" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp2.2" t="Include">
@@ -74,6 +80,9 @@
           <e p="Election" t="Include">
             <e p="CreateElection.cs" t="Include" />
             <e p="UpdateElection.cs" t="Include" />
+          </e>
+          <e p="User" t="Include">
+            <e p="UserSearch.cs" t="Include" />
           </e>
           <e p="Vote" t="Include">
             <e p="Vote.cs" t="Include" />
@@ -91,6 +100,7 @@
           <e p="Election" t="Include">
             <e p="CandidatedElection.cs" t="Include" />
             <e p="ElectionDTO.cs" t="Include" />
+            <e p="ElectionVotes.cs" t="Include" />
             <e p="ParticipatedElection.cs" t="Include" />
           </e>
           <e p="Profile" t="Include">
@@ -110,6 +120,8 @@
           <e p="BlockchainCommon" t="Include">
             <e p="20200117122120_initial.Designer.cs" t="Include" />
             <e p="20200117122120_initial.cs" t="Include" />
+            <e p="20200227154703_Users.Designer.cs" t="Include" />
+            <e p="20200227154703_Users.cs" t="Include" />
             <e p="BlockchainCommonContextModelSnapshot.cs" t="Include" />
           </e>
           <e p="BlockchainContextModelSnapshot.cs" t="Include" />
@@ -121,6 +133,9 @@
           </e>
           <e p="Election" t="Include">
             <e p="ElectionSearch.cs" t="Include" />
+          </e>
+          <e p="Profile" t="Include">
+            <e p="CreateWalletModel.cs" t="Include" />
           </e>
         </e>
         <e p="PeerToPeer" t="Include">

@@ -14,7 +14,8 @@ namespace Voting.Infrastructure.AutoMapper
             CreateMap<UpdateElection, Election>();
 
             CreateMap<CreateElectionCandidate, ElectionCandidate>();
-            CreateMap<ElectionCandidate, ElectionCandidateDTO>();
+            CreateMap<ElectionCandidate, ElectionCandidateDTO>()
+                .ForMember(d => d.CandidateAddress, opt => opt.MapFrom(s => s.Candidate));
             CreateMap<UpdateElectionCandidate, ElectionCandidate>();
         }
     }

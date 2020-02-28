@@ -59,14 +59,22 @@ namespace Voting.API.Controllers
                 await _electionService.GetParticipatedElectionsAsync(PublicKey);
             return Ok(participatedElections);
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetCandidatedElections()
         {
             List<CandidatedElection> candidatedElections =
                 await _electionService.CandidatedElectionAsync(PublicKey);
-            
+
             return Ok(candidatedElections);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetElectionVotes()
+        {
+            List<ElectionVotes> result = await _electionService.GetELectionVotesAsync();
+
+            return Ok(result);
         }
 
         [HttpPost]
@@ -84,6 +92,20 @@ namespace Voting.API.Controllers
             return Ok();
         }
 
+        [HttpPatch]
+        public async Task<IActionResult> CloseElection([FromBody]UpdateElection election)
+        {
+            await _electionService.CloseElectionAsync(election.Id);
+            return Ok();
+        }
+        
+        [HttpPatch]
+        public async Task<IActionResult> OpenElection([FromBody]UpdateElection election)
+        {
+            await _electionService.OpenElectionAsync(election.Id);
+            return Ok();
+        }
+        
         [HttpDelete]
         public async Task<IActionResult> RemoveElection(int electionId)
         {

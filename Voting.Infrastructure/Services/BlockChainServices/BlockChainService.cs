@@ -69,8 +69,6 @@ namespace Voting.Infrastructure.Services.BlockChainServices
             var blockCount = _dbContext.Blocks.Count();
 
             var blocks = _dbContext.Blocks.ToList();
-            
-            Console.WriteLine("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
 
             if (newChain.Count < blockCount)
             {
@@ -84,7 +82,6 @@ namespace Voting.Infrastructure.Services.BlockChainServices
                 return;
             }
             
-            Console.WriteLine("222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222");
             _dbContext.Blocks.RemoveRange(_dbContext.Blocks);
             _dbContext.Blocks.AddRange(newChain);
             _dbContext.SaveChanges();

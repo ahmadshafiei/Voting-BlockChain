@@ -15,6 +15,5 @@ namespace Voting.Model
 
         public const long MINE_RATE = TimeSpan.TicksPerSecond * 5;
 
-        public const int MINING_REWARD = 50;
     }
 }

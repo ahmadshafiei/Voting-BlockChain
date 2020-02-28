@@ -15,6 +15,7 @@ namespace Voting.Model.Context
         }
 
 
+        public DbSet<User> Users { get; set; }
         public DbSet<Election> Elections { get; set; }
         public DbSet<ElectionCandidate> ElectionCandidates { get; set; }
     }

@@ -32,7 +32,7 @@ namespace Voting.Model.Entities
                 }
                 catch (Exception e)
                 {
-                    throw new ValidationException("فرمت شناسه وارد شده اشتباه است");
+                    throw new ValidationException("شناسه ی وارد شده صحیح نمی باشد");
                 }
             }
 

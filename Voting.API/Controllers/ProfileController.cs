@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Voting.Infrastructure.API.User;
+using Voting.Infrastructure.Model.Profile;
 using Voting.Infrastructure.Services;
 using Voting.Model.Entities;
 
@@ -23,16 +25,40 @@ namespace Voting.API.Controllers
             _profileService = profileService;
         }
 
-        [HttpGet]
-        public IActionResult GetNewWallet()
+        [HttpPost]
+        public async Task<IActionResult> GetNewWallet([FromBody] CreateWalletModel model)
         {
-            return Ok(_profileService.GetNewWallet());
+            var wallet = await _profileService.GetNewWallet(model);
+            return Ok(wallet);
         }
 
         [HttpGet]
-        public IActionResult GetPublicKey(string privateKey)
+        public async Task<IActionResult> GetPublicKey(string privateKey)
         {
-            return Ok(_profileService.GetPublicKey(privateKey));
+            var result = await _profileService.GetPublicKey(privateKey);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers([FromQuery] UserSearch filter)
+        {
+            var result = await _profileService.GetUsersAsync(filter);
+            return Ok(result);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> IsAdmin(string publicKey)
+        {
+            var isAdmin = await _profileService.IsAdminAsync(publicKey);
+            return Ok(isAdmin);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsername(string publicKey)
+        {
+            var user = await _profileService.GetUsernameAsync(publicKey);
+            return Ok(user);
         }
     }
 }

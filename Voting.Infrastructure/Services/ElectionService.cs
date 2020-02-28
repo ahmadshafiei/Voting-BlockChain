@@ -44,6 +44,7 @@ namespace Voting.Infrastructure.Services
             ValidateElectionCandidate(election.Candidates);
 
             election.Address = EthECKey.GenerateKey().GetPublicAddress();
+            election.Status = ElectionStatus.Pending;
 
             _commonDbContext.Elections.Add(election);
 
@@ -59,7 +60,7 @@ namespace Voting.Infrastructure.Services
             electionCandidates.ForEach(c =>
             {
                 if (c.Candidate.Length != 130 || c.Candidate.Any(ch =>
-                        !((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))))
+                    !((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))))
                     invalidCandidates.Add(c.Candidate);
             });
 
@@ -77,6 +78,18 @@ namespace Voting.Infrastructure.Services
 
             if (old == null)
                 throw new NotFoundException("انتخابات");
+
+            bool usedInBlockchain = _dbContext.Blocks
+                .ToList()
+                .SelectMany(b => JsonConvert.DeserializeObject<List<Transaction>>(b.Data))
+                .Any(t => t.Outputs.Any(o => o.ElectionAddress == old.Address));
+
+            bool usedInTransactions =
+                await _dbContext.Transactions.AnyAsync(t => t.Outputs.Any(o => o.ElectionAddress == old.Address));
+
+            if (usedInBlockchain || usedInTransactions)
+                throw new ValidationException("در این انتخابات رای گیری انجام شده و امکان ویرایش آن نیست");
+
 
             List<ElectionCandidate> candidates = _mapper.Map<List<ElectionCandidate>>(election.Candidates);
 
@@ -124,15 +137,29 @@ namespace Voting.Infrastructure.Services
             model.Name = model.Name ?? "";
             model.Address = model.Address ?? "";
 
-            var elections = _commonDbContext.Elections
+            var elections = await _commonDbContext.Elections
                 .Where(e => e.Name.Contains(model.Name) &&
                             e.Address.Contains(model.Address))
                 .OrderByDescending(e => e.InsertDate)
-                .ProjectTo<ElectionDTO>(_mapper.ConfigurationProvider);
+                .ProjectTo<ElectionDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            var candidates = await _commonDbContext.Users
+                .Where(u =>
+                    elections.SelectMany(e => e.Candidates).Select(c => c.CandidateAddress).Contains(u.PublicKey))
+                .ToListAsync();
 
             result.TotalCount = elections.Count();
 
-            result.Items = await elections.ToListAsync();
+            result.Items = elections;
+
+            foreach (var candidate in result.Items.SelectMany(i => i.Candidates))
+            {
+                candidate.CandidateName =
+                    candidates.Any(c => c.PublicKey == candidate.CandidateAddress)
+                        ? candidates.Single(c => c.PublicKey == candidate.CandidateAddress).Name
+                        : "";
+            }
 
             return result;
         }
@@ -180,6 +207,7 @@ namespace Voting.Infrastructure.Services
         public async Task<List<ElectionDTO>> GetUnvotedElections(string voterPublicKey)
         {
             List<Election> allElections = await _commonDbContext.Elections
+                .Where(e => e.Status == ElectionStatus.Pending)
                 .Include(e => e.Candidates)
                 .ToListAsync();
 
@@ -197,12 +225,21 @@ namespace Voting.Infrastructure.Services
             votedElectionAddresses.AddRange(transactionVotes);
 
             allElections.RemoveAll(e => votedElectionAddresses.Contains(e.Address));
-            
+
             allElections.ForEach(e => e.Candidates.RemoveAll(c => c.Candidate == voterPublicKey));
 
             allElections.RemoveAll(e => !e.Candidates.Any());
-            
-            return _mapper.Map<List<ElectionDTO>>(allElections);
+
+            var result = _mapper.Map<List<ElectionDTO>>(allElections);
+
+
+            foreach (var c in result.SelectMany(e => e.Candidates))
+            {
+                var user = await _commonDbContext.Users.SingleOrDefaultAsync(u => u.PublicKey == c.CandidateAddress);
+                c.CandidateName = user?.Name;
+            }
+
+            return result;
         }
 
         public async Task<List<ParticipatedElection>> GetParticipatedElectionsAsync(string voterAddress)
@@ -215,7 +252,7 @@ namespace Voting.Infrastructure.Services
                 .Select(o => new ParticipatedElection
                 {
                     ElectionAddress = o.ElectionAddress,
-                    Candidate = o.CandidateAddress
+                    CandidateAddress = o.CandidateAddress
                 }).ToList();
 
             foreach (var participatedElection in participatedElections)
@@ -225,6 +262,13 @@ namespace Voting.Infrastructure.Services
 
                 if (election != null)
                     participatedElection.ElectionName = election.Name;
+
+                var candidate =
+                    await _commonDbContext.Users.SingleOrDefaultAsync(u =>
+                        u.PublicKey == participatedElection.CandidateAddress);
+
+                if (candidate != null)
+                    participatedElection.CandidateName = candidate.Name;
             }
 
             return participatedElections;
@@ -261,6 +305,70 @@ namespace Voting.Infrastructure.Services
             }
 
             return candidatedElections;
+        }
+
+        public async Task<List<ElectionVotes>> GetELectionVotesAsync()
+        {
+            List<ElectionVotes> result = new List<ElectionVotes>();
+
+            var groupedElections = _dbContext.Blocks
+                .ToList()
+                .SelectMany(b => JsonConvert.DeserializeObject<List<Transaction>>(b.Data))
+                .SelectMany(t => t.Outputs)
+                .GroupBy(o => o.ElectionAddress)
+                .ToList();
+
+            foreach (var electionGroup in groupedElections)
+            {
+                var election =
+                    await _commonDbContext.Elections.SingleOrDefaultAsync(e => e.Address == electionGroup.Key);
+
+                var candidates = await _commonDbContext.Users
+                    .Where(u => electionGroup.Select(g => g.CandidateAddress).Contains(u.PublicKey)).ToListAsync();
+
+                result.Add(new ElectionVotes
+                {
+                    Election = election.Name,
+                    ElectionStatus = election.Status,
+                    Candidates = electionGroup.GroupBy(e => e.CandidateAddress).Select(c => new CandidateVote
+                    {
+                        Candidate = candidates.Any(cc => cc.PublicKey == c.Key && !string.IsNullOrEmpty(cc.Name))
+                            ? candidates.Single(cc => cc.PublicKey == c.Key).Name
+                            : c.Key,
+                        TotalVotes = c.Count()
+                    }).ToList()
+                });
+            }
+
+            return result;
+        }
+
+        public async Task CloseElectionAsync(int electionId)
+        {
+            Election election = await _commonDbContext.Elections.SingleOrDefaultAsync(e => e.Id == electionId);
+
+            if (election == null)
+                throw new NotFoundException("انتخابات");
+
+            election.Status = ElectionStatus.Closed;
+
+            _commonDbContext.Update(election);
+
+            await _commonDbContext.SaveChangesAsync();
+        }
+
+        public async Task OpenElectionAsync(int electionId)
+        {
+            Election election = await _commonDbContext.Elections.SingleOrDefaultAsync(e => e.Id == electionId);
+
+            if (election == null)
+                throw new NotFoundException("انتخابات");
+
+            election.Status = ElectionStatus.Pending;
+
+            _commonDbContext.Update(election);
+
+            await _commonDbContext.SaveChangesAsync();
         }
     }
 }
