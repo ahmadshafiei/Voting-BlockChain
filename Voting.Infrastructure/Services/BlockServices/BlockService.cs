@@ -15,21 +15,17 @@ namespace Voting.Infrastructure.Services.BlockServices
         const int DIFFICULTY = 2;
         const int MINE_RATE = 3 * 10 ^ 7; //3 Seconds in ticks
 
-        /// <summary>
-        /// Set's the block according to <paramref name="previousBlock"/> 
-        /// </summary>
-        /// <param name="previousBlock">Previous block in chain</param>
-        /// <returns>Newly added block</returns>
+
         public Block MineBlock(Block previousBlock, List<Transaction> data)
         {
-            string d = JsonConvert.SerializeObject(data,
+            string _data = JsonConvert.SerializeObject(data,
                 new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
 
             Block block = new Block
             {
                 Timestamp = DateTime.Now.Ticks,
                 PreviousHash = previousBlock.Hash,
-                Data = d,
+                Data = _data,
                 Nonce = 0,
                 Difficulty = previousBlock.Difficulty
             };
@@ -53,5 +49,8 @@ namespace Voting.Infrastructure.Services.BlockServices
                 ? difficulty + 1
                 : (difficulty > 1 ? difficulty - 1 : 1);
         }
+        
+        
+        
     }
 }

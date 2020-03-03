@@ -48,8 +48,13 @@ namespace Voting.Infrastructure.Services
             {
                 Transaction transaction =
                     await _walletService.CreateTransaction(wallet, vote.ElectionAddress, vote.Candidate);
+                
                 _p2PNetwork.BroadcastTransaction(transaction);
             }
         }
+        
+        
+        
+        
     }
 }
